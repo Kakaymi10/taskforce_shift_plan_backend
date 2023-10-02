@@ -21,31 +21,27 @@ Shift Plan is an employee management web application designed to help companies 
 
 
 ## 2. Prerequisites
-
-List the prerequisites that users need to have installed on their local machine before they can set up and run the project. Include links to where users can download or install these prerequisites.
-
-Example:
-
+Install:
 - Node.js and npm (https://nodejs.org/)
 - Docker (https://www.docker.com/)
 
 ## 3. Getting Started
 
-Explain the steps required to set up and run the project locally. Divide this section into subsections for clarity.
 
-### 3.1 Installation
+3.1 Clone the repository to your local machine:
 
-1. Clone the repository to your local machine:
-
-   ```bash
+```bash
    git clone https://github.com/your-username/backend-repo.git
    cd backend-repo
+```
+
+3.2 Running the Application
+
 Install Node.js dependencies:
 
 ```bash
 npm install
 ```
-3.2 Running the Application
 Build the Docker container:
 
 ```bash
