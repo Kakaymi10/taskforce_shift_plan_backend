@@ -41,27 +41,25 @@ Explain the steps required to set up and run the project locally. Divide this se
    cd backend-repo
 Install Node.js dependencies:
 
-bash
-Copy code
-npm install
+    ```bash
+    npm install
 3.2 Running the Application
 Build the Docker container:
 
-bash
-Copy code
-docker build -t my-node-app .
+    ```bash
+    docker build -t my-node-app .
+    
 Start the Docker container:
 
-bash
-Copy code
-docker run -p 3000:3000 my-node-app
+    ```bash
+    docker run -p 3000:3000 my-node-app
+    
 Access the backend at http://localhost:3000.
 
 4. Project Structure
 The project directory structure is organized as follows:
 
-bash
-Copy code
+```bash
 backend/
   ├── config/
   ├── models/
@@ -76,8 +74,10 @@ backend/
   ├── package.json
   ├── .eslintrc.json
   └── .huskyrc
+```
 Here is a breakdown of the key directories and files:
 
+```bash
 config/: Configuration files for the project.
 models/: Database models and schema definitions.
 migrations/: Database migration scripts.
@@ -87,6 +87,7 @@ index.js: Entry point for the Node.js application.
 package.json: Project configuration and dependencies.
 .eslintrc.json: ESLint configuration.
 .huskyrc: Configuration for Husky pre-commit hooks.
+```
 5. Contributing
 Provide guidelines for users who want to contribute to the project. Explain the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
 
