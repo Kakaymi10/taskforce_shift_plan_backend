@@ -1,4 +1,5 @@
 # TaskForce
+# Shift Plan - Employee Management System
 
 # Node.js Backend with Docker
 
@@ -16,8 +17,8 @@ This repository contains a Node.js backend project built with Express.js, ESLint
 6. [License](#license)
 
 ## 1. Introduction
+Shift Plan is an employee management web application designed to help companies efficiently manage employee shifts, working hours, departments, and absences. The system supports multiple companies, each with its own dedicated dashboard.
 
-Provide a brief overview of the project, its purpose, and its key features. Mention any specific goals or functionalities of the backend application.
 
 ## 2. Prerequisites
 
