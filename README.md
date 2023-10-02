@@ -41,7 +41,8 @@ Explain the steps required to set up and run the project locally. Divide this se
    cd backend-repo
 Install Node.js dependencies:
 
-
+bash
+Copy code
 npm install
 3.2 Running the Application
 Build the Docker container:
@@ -57,11 +58,9 @@ docker run -p 3000:3000 my-node-app
 Access the backend at http://localhost:3000.
 
 4. Project Structure
-Explain the directory structure of your project to help users understand where to find key files and components. Provide a brief description of each directory or key file.
+The project directory structure is organized as follows:
 
-Example:
-
-lua
+bash
 Copy code
 backend/
   ├── config/
@@ -69,14 +68,25 @@ backend/
   ├── migrations/
   ├── tests/
   ├── src/
-  |    ├── controllers/
-  |    ├── middlewares/
-  |    ├── routes/
-  |    └── utils/
+  │   ├── controllers/
+  │   ├── middlewares/
+  │   ├── routes/
+  │   └── utils/
   ├── index.js
   ├── package.json
   ├── .eslintrc.json
   └── .huskyrc
+Here is a breakdown of the key directories and files:
+
+config/: Configuration files for the project.
+models/: Database models and schema definitions.
+migrations/: Database migration scripts.
+tests/: Test scripts and test-related files.
+src/: Source code for the application.
+index.js: Entry point for the Node.js application.
+package.json: Project configuration and dependencies.
+.eslintrc.json: ESLint configuration.
+.huskyrc: Configuration for Husky pre-commit hooks.
 5. Contributing
 Provide guidelines for users who want to contribute to the project. Explain the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
 
@@ -88,11 +98,3 @@ Make changes and commit with clear messages.
 Push changes to your fork.
 Submit a pull request to the main branch.
 6. License
-Specify the license under which the project is distributed. Include a link to the full license text if applicable. For example, you can use the MIT License:
-
-This project is licensed under the MIT License.
-
-css
-Copy code
-
-This structured README provides clear sections for introduction, prerequisites
