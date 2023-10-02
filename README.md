@@ -41,18 +41,21 @@ Explain the steps required to set up and run the project locally. Divide this se
    cd backend-repo
 Install Node.js dependencies:
 
-    ```bash
-    npm install
+```bash
+npm install
+```
 3.2 Running the Application
 Build the Docker container:
 
-    ```bash
-    docker build -t my-node-app .
-    
+```bash
+docker build -t my-node-app .
+```
+   
 Start the Docker container:
 
-    ```bash
-    docker run -p 3000:3000 my-node-app
+```bash
+docker run -p 3000:3000 my-node-app
+```
     
 Access the backend at http://localhost:3000.
 
@@ -71,6 +74,7 @@ backend/
   │   ├── routes/
   │   └── utils/
   ├── index.js
+  ├── Dockerfile
   ├── package.json
   ├── .eslintrc.json
   └── .huskyrc
@@ -87,15 +91,36 @@ index.js: Entry point for the Node.js application.
 package.json: Project configuration and dependencies.
 .eslintrc.json: ESLint configuration.
 .huskyrc: Configuration for Husky pre-commit hooks.
+Dockerfile: Configuration for building a Docker image.
 ```
 5. Contributing
 Provide guidelines for users who want to contribute to the project. Explain the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
 
-Example:
+```bash
+To contribute to this project, follow these steps:
 
+Create a new branch for your changes:
+
+
+git checkout -b feature/your-feature-name
+Make changes and commit with clear messages:
+
+
+git commit -m "Add feature: your-feature-name"
+Push changes to the repository:
+
+
+git push origin feature/your-feature-name
+Submit a pull request against the main branch.
+
+```
+OR
+
+```bash
 Fork the repo on GitHub.
 Create a new branch for your changes.
 Make changes and commit with clear messages.
 Push changes to your fork.
 Submit a pull request to the main branch.
+```
 6. License
