@@ -7,21 +7,45 @@
     "test": "tests"
   },
   "scripts": {
+    "babel": "babel index.js -d dist --presets @babel/preset-modules",
+    "dev": "npm run babel && nodemon --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "lint": "eslint --fix \"**/*.js\"",
+    "format": "npm run lint && prettier --write \"**/*.js\"",
+    "prepare": "husky install",
+    "build": "rm -rf build && babel src -d build --presets @babel/preset-env",
+    "start": "npm run build && node build/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.23.0",
+    "@babel/node": "^7.22.6",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-modules": "^0.1.6",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
     "express": "^4.18.2",
     "husky": "^8.0.3",
+    "mysql2": "^3.6.1",
+    "nodemon": "^3.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.33.0"
   },
   "devDependencies": {
     "eslint": "^8.50.0",
-    "eslint-plugin-react": "^7.33.2"
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.3"
   }
 }
