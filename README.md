@@ -31,7 +31,7 @@ Install:
 3.1 Clone the repository to your local machine:
 
 ```bash
-   git clone https://github.com/your-username/backend-repo.git
+   git clone https://github.com/Kakaymi10/taskforce_shift_plan_backend.git
    cd backend-repo
 ```
 
