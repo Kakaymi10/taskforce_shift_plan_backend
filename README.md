@@ -91,7 +91,7 @@ package.json: Project configuration and dependencies.
 Dockerfile: Configuration for building a Docker image.
 ```
 5. Contributing
-Provides guidelines for users who want to contribute to the project. Explains the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
+    It provides guidelines for users who want to contribute to the project. Explains the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
 
 ```bash
 To contribute to this project, follow these steps:
