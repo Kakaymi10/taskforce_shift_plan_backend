@@ -56,7 +56,7 @@ docker run -p 3000:3000 my-node-app
     
 Access the backend at http://localhost:3000.
 
-4. Project Structure
+## 4. Project Structure 
 The project directory structure is organized as follows:
 
 ```bash
@@ -90,7 +90,7 @@ package.json: Project configuration and dependencies.
 .huskyrc: Configuration for Husky pre-commit hooks.
 Dockerfile: Configuration for building a Docker image.
 ```
-5. Contributing
+## 5. Contibuting
     It provides guidelines for users who want to contribute to the project. Explains the process for making contributions, such as forking the repository, creating branches, making changes, and submitting pull requests.
 
 ```bash
@@ -120,4 +120,4 @@ Make changes and commit with clear messages.
 Push changes to your fork.
 Submit a pull request to the main branch.
 ```
-6. License
+## 6. License
