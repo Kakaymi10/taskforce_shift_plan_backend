@@ -14,7 +14,7 @@
     "format": "npm run lint && prettier --write \"**/*.js\"",
     "prepare": "husky install",
     "build": "rm -rf build && babel src -d build --presets @babel/preset-env",
-    "start": "npm run build && node build/index.js",    
+    "start": "npm run build && node build/index.js",
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all"
   },
@@ -37,9 +37,6 @@
     "sequelize": "^6.33.0"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
-    "eslint-plugin-react": "^7.33.2",
-    "prettier": "^3.0.3",
     "@babel/cli": "^7.22.9",
     "@babel/core": "^7.23.0",
     "@babel/node": "^7.22.6",
@@ -47,6 +44,9 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.22.20",
-    "@babel/preset-modules": "^0.1.6"
+    "@babel/preset-modules": "^0.1.6",
+    "eslint": "^8.50.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.3"
   }
 }
