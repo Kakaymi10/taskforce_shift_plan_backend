@@ -37,7 +37,7 @@ const dbCon = async () => {
 };
 
 app.use(
-  "shift-planner/api-docs",
+  "/shift-planner/api-docs",
   swaggerUiServe,
   swaggerUiSetup
 );
