@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:14
+FROM node:17-alpine
 
 # Set the working directory in the container
 WORKDIR /taskforce_backend
@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # Specify the command to run when the container starts
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

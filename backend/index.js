@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './models/index';
 
+const { swaggerUiServe, swaggerUiSetup } = require('./src/controllers/swaggerDocs')
+
 dotenv.config();
 
 const { PORT, DB_NAME } = process.env;
@@ -21,6 +23,17 @@ const server = app.listen(PORT || 3000, () => {
   console.log(`Server started on port ${PORT}`);
 });
 
+
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to our app!!' });
+});
+
+
+
+const server = app.listen(PORT || 3000, () => {
+  console.log(`Server started on port ${PORT}`);
+});
+
 // INITIATE DATABASE CONNECTION
 const dbCon = async () => {
   try {
@@ -32,9 +45,17 @@ const dbCon = async () => {
   
 };
 
+
+app.use(
+  "/shift-planner/api-docs",
+  swaggerUiServe,
+  swaggerUiSetup
+);
+
 // START SERVER
 Promise.all([server, dbCon()]).catch((error) => {
   console.log(`Server error: ${error.message}`);
 });
 
+export default app;
 export default app;
