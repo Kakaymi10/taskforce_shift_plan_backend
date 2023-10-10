@@ -19,6 +19,15 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to our app!!' });
 });
 
+const server = app.listen(PORT || 3000, () => {
+  console.log(`Server started on port ${PORT}`);
+});
+
+
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to our app!!' });
+});
+
 
 
 const server = app.listen(PORT || 3000, () => {
@@ -36,6 +45,7 @@ const dbCon = async () => {
   
 };
 
+
 app.use(
   "/shift-planner/api-docs",
   swaggerUiServe,
@@ -47,4 +57,5 @@ Promise.all([server, dbCon()]).catch((error) => {
   console.log(`Server error: ${error.message}`);
 });
 
+export default app;
 export default app;
