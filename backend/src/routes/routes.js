@@ -1,7 +1,8 @@
-const Router = require("express").Router();
-const userSignUp = require('../controllers/authentication/signUp');
-const signUpValidations = require('../controllers/authentication/signUpValidations')
+import express from 'express';
+import authRoutes from './authRoutes';
 
-Router.route('/shift-planner/auth/signup').post(signUpValidations,userSignUp);
+const router = express.Router();
 
-module.exports = Router;
+router.use('/auth', authRoutes);
+
+export default router;

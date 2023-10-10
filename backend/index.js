@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './models/index';
+import allRoutes from './src/routes/routes';
 
-const routes = require('./src/routes/routes');
-const { swaggerUiServe, swaggerUiSetup } = require('./src/controllers/swaggerDocs')
+const { swaggerUiServe, swaggerUiSetup } = require('./src/swagger/swaggerDocs');
 
 dotenv.config();
 
@@ -19,12 +19,6 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to our app!!' });
 });
-
-
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to our app!!' });
-});
-
 
 
 const server = app.listen(PORT || 3000, () => {
@@ -42,10 +36,10 @@ const dbCon = async () => {
   
 };
 
-app.use(routes)
+app.use('/shift-planner/api/v1', allRoutes);
 
 app.use(
-  "/shift-planner/api-docs",
+  "/shift-planner/api/v1/api-docs",
   swaggerUiServe,
   swaggerUiSetup
 );
