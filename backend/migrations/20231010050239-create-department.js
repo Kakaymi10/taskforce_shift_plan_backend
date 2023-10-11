@@ -18,8 +18,8 @@ module.exports = {
         type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            table: 'Companies',
-            field: 'id'
+            model: 'Companies',
+            key: 'id'
           }
       },
       createdAt: {

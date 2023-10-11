@@ -1,5 +1,5 @@
-import { hashPassword, generateToken } from '../utils/auth-helper';
-import db from '../../models/index';
+const { hashPassword, generateToken } = require('../utils/auth-helper');
+const db = require('../../models/index');
 
 const { User } = db;
 
@@ -35,4 +35,4 @@ class AuthController {
 
 }
 
-export default AuthController;
+module.exports = AuthController;

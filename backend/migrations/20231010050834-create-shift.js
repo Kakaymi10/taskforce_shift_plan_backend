@@ -25,16 +25,16 @@ module.exports = {
         type: Sequelize.INTEGER,
           allowNull:false,
           references: {
-            table: 'Users',
-            field: 'id'
+            model: 'Users',
+            key: 'id'
           }
       },
       managerId: {
         type: Sequelize.INTEGER,
           allowNull:false,
           references: {
-            table: 'Users',
-            field: 'id'
+            model: 'Users',
+            key: 'id'
           }
       },
       createdAt: {

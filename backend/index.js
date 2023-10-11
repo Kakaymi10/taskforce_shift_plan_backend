@@ -1,11 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import db from './models/index';
-import allRoutes from './src/routes/routes';
-
-const { swaggerUiServe, swaggerUiSetup } = require('./src/swagger/swaggerDocs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const db = require('./models/index')
+const allRoutes = require('./src/routes/routes')
 
 dotenv.config();
 
@@ -38,15 +36,9 @@ const dbCon = async () => {
 
 app.use('/shift-planner/api/v1', allRoutes);
 
-app.use(
-  "/shift-planner/api/v1/api-docs",
-  swaggerUiServe,
-  swaggerUiSetup
-);
-
 // START SERVER
 Promise.all([server, dbCon()]).catch((error) => {
   console.log(`Server error: ${error.message}`);
 });
 
-export default app;
+module.exports = app;

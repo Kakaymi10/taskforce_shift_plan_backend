@@ -1,9 +1,9 @@
-import express from 'express';
-import authClass from '../controllers/authControllers';
-import AuthValidations from '../validations/authValidations';
+const express = require('express');
+const authClass = require('../controllers/authControllers');
+const AuthValidations = require('../controllers/validations/authValidations');
 
 const router = express.Router();
 
 router.post('/signup',AuthValidations.signUp, authClass.signUp);
 
-export default router;
+module.exports = router;

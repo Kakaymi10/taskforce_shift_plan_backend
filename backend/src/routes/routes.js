@@ -1,8 +1,12 @@
-import express from 'express';
-import authRoutes from './authRoutes';
+const express = require('express');
+const authRoutes = require('./authRoutes');
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../swagger/swagger-output.json');
 
 const router = express.Router();
 
 router.use('/auth', authRoutes);
 
-export default router;
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+module.exports = router;
