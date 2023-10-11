@@ -8,8 +8,8 @@ describe('Confirmation endpoint', () => {
       // Define the user details with a valid confirmation token
       name: 'Moussa',
       email: 'm.moussa@alustudent.com',
-      password: 'Kakay10',
-      confirmationToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJtLm1vdXNzYUBhbHVzdHVkZW50LmNvbSIsImlhdCI6MTY5NzAzOTMxNywiZXhwIjoxNjk3NDcxMzE3fQ.4rFrdMVytVr6oTYIYXQpHHTKkfBMLMxMANTa7d5INeY', // Replace with a valid token
+      password: '',
+      confirmationToken: '', // Replace with a valid token
     };
 
     // Save the user with the valid token to the database
