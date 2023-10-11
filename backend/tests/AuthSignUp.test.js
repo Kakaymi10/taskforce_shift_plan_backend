@@ -14,7 +14,7 @@ describe('Signup endpoint', () => {
       .send(requestBody);
 
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('message', 'Signed Up successfully');
+    expect(res.body).toHaveProperty('message', 'User signed up successfully. Check your email for confirmation.');
   });
 
   it('should raise error if user already existed', async () => {
