@@ -76,14 +76,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       field: 'updatedAt',
     },
-    confirmedAt: {
-      allowNull: true,
-      type: DataTypes.DATE,
-      field: 'confirmedAt',
-    },
     token: {
       type:DataTypes.STRING,
       allowNull: false,
+    },
+    confirmedAt: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: 'Not yet',
+      field: 'confirmedAt',
     }
   }, {
     timestamps: true,    

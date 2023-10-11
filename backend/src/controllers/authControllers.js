@@ -47,11 +47,11 @@ class AuthController {
     const { token } = req.query;
 
     try {
-      const user = await User.findOne({ where: { confirmationToken: token } });
+      const user = await User.findOne({ where: { token: token } });
 
       if (user) {
         // Update the 'confirmedAt' field with the current date and time
-        user.confirmedAt = new Date();
+        user.confirmedAt = new Date().toISOString();;
         await user.save();
 
         return res.status(200).send('Email confirmed successfully.');

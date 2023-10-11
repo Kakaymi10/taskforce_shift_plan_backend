@@ -6,10 +6,10 @@ describe('Confirmation endpoint', () => {
     // Create a user or get a user with a valid confirmation token from your database
     const userWithValidToken = {
       // Define the user details with a valid confirmation token
-      name: 'Amina',
-      email: 'amina212@test.com',
-      password: '123456',
-      confirmationToken: 'valid_confirmation_token', // Replace with a valid token
+      name: 'Moussa',
+      email: 'm.moussa@alustudent.com',
+      password: 'Kakay10',
+      confirmationToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJtLm1vdXNzYUBhbHVzdHVkZW50LmNvbSIsImlhdCI6MTY5NzAzOTMxNywiZXhwIjoxNjk3NDcxMzE3fQ.4rFrdMVytVr6oTYIYXQpHHTKkfBMLMxMANTa7d5INeY', // Replace with a valid token
     };
 
     // Save the user with the valid token to the database
