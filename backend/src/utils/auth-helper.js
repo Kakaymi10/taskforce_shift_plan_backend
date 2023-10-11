@@ -12,7 +12,13 @@ async function hashPassword(password) {
   return hashedPassword;
 }
 
+async function validateUser(hash, password) {
+  const res = bcrypt.compare(password, hash);
+  return res;
+}
+
 module.exports = {
     generateToken,
-    hashPassword
+    hashPassword,
+    validateUser
 }
