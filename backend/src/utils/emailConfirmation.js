@@ -1,36 +1,14 @@
-// utils/email.js
+// utils/sendConfirmationEmail.js
 
-const nodemailer = require('nodemailer');
-const fs = require('fs/promises');
 const handlebars = require('handlebars');
-
-// Load email configuration from environment variables
-const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
-
-// Load the Handlebars template
-const emailTemplatePath = './src/utils/emailConfirmation.hbs';
-
-let emailTemplate;
-
-async function loadEmailTemplate() {
-  try {
-    const templateFile = await fs.readFile(emailTemplatePath, 'utf8');
-    emailTemplate = handlebars.compile(templateFile);
-  } catch (error) {
-    console.error('Error loading email template:', error);
-  }
-}
-
-loadEmailTemplate();
+const { transporter, loadEmailTemplate } = require('./emailService');
+const emailTemplatePath = './src/utils/emailConfirmation.hbs'; // Correct the path
 
 async function sendConfirmationEmail(userEmail, userName, confirmationLink) {
   try {
+    const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
+    const emailTemplate = handlebars.compile(emailTemplateContent);
+
     const emailContent = emailTemplate({
       userName,
       confirmationLink,
