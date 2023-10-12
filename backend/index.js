@@ -33,7 +33,22 @@ const dbCon = async () => {
   } 
   
 };
+const { User } = db; // Assuming User is your User model
+async function deleteAllUsers() {
+  try {
+    // Delete all users
+    await User.destroy({
+      where: {}, // An empty where clause matches all records
+    });
 
+    console.log('All users deleted successfully.');
+  } catch (error) {
+    console.error('Error deleting users:', error);
+  }
+}
+
+// Call the function to delete all users
+deleteAllUsers();
 
 
 app.use('/shift-planner/api/v1', allRoutes);
