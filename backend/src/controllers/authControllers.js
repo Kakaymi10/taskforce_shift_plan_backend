@@ -1,4 +1,5 @@
 const { hashPassword, generateToken, validateUser } = require('../utils/auth-helper');
+
 const db = require('../../models/index');
 
 const { User } = db;
@@ -51,9 +52,12 @@ class AuthController {
                 error: 'User not found',
             });
         }
+        
+        const response = await validateUser(user.password, password);
 
-      console.log(user.password)
-       if(!validateUser(user.password , hashPassword(password))){
+        
+
+         if(!response){
             return res.status(400).json({
                 status: 400,
                 error: 'Invalid password',

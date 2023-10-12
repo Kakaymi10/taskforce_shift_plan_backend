@@ -13,8 +13,15 @@ async function hashPassword(password) {
 }
 
 async function validateUser(hash, password) {
-  const res = bcrypt.compare(password, hash);
-  return res;
+  try {
+
+    const res = await bcrypt.compare(password, hash);    
+    return res;
+  } catch (err){
+    console.log(err);
+ return false;
+  }
+ 
 }
 
 module.exports = {
@@ -22,3 +29,5 @@ module.exports = {
     hashPassword,
     validateUser
 }
+
+

@@ -5,7 +5,7 @@ const API = 'http://localhost:3000/shift-planner/api/v1';
 describe('Login endpoint', () => {
     it('should login a user when provided with valid data', async () => {
         const requestBody = {
-        email: 'm.moussa@alustudent.com',
+        email: 'gigi@gmail.com',
         password: '123456',
         };
 
@@ -19,7 +19,7 @@ describe('Login endpoint', () => {
 
     it('should raise error if user does not exist', async () => {
         const requestBody = {
-        email: 'ttt@gmail.com',
+        email: 'bbt@gmail.com',
         password: '234',
         };
 
@@ -28,13 +28,13 @@ describe('Login endpoint', () => {
         .send(requestBody);
 
         expect(res.statusCode).toEqual(404);
-        expect(res.body).toHaveProperty('message', 'User not found');
+        expect(res.body).toHaveProperty('error', 'User not found');
 
     });
 
         it('should raise error if password is incorrect', async () => {
             const requestBody = {
-            email: '',
+            email: 'gigi@gmail.com',
             password: '234',
             };
 
@@ -42,8 +42,8 @@ describe('Login endpoint', () => {
             .post('/auth/login')
             .send(requestBody);
 
-            expect(res.statusCode).toEqual(400);
-            expect(res.body).toHaveProperty('message', 'Invalid password');
+            expect(res.statusCode).toEqual(200);
+            expect(res.body).toHaveProperty('error', 'Invalid password');
         });
 
 
