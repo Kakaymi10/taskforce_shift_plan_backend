@@ -29,24 +29,24 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         references: {
-          table: 'Roles',
-          field: 'id'
+          model: 'Roles',
+          key: 'id'
         }
       },
       companyId: {
         type: Sequelize.INTEGER,
         allowNull:false,
         references: {
-          table: 'Companies',
-          field: 'id'
+          model: 'Companies',
+          key: 'id'
         }
       },
       departmentId: {
         type: Sequelize.INTEGER,
         allowNull:false,
         references: {
-          table: 'Departments',
-          field: 'id'
+          model: 'Departments',
+          key: 'id'
         }
       },
       createdAt: {
