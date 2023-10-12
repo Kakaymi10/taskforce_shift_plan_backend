@@ -42,3 +42,4 @@ Promise.all([server, dbCon()]).catch((error) => {
 });
 
 module.exports = app;
+module.exports = app;
