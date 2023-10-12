@@ -50,6 +50,16 @@
         }
       }
     },
+
+    "/auth/confirm-email": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string"
+
     "/auth/login": {
       "post": {
         "description": "",
@@ -68,6 +78,7 @@
                 }
               }
             }
+
           }
         ],
         "responses": {
@@ -77,12 +88,14 @@
           "400": {
             "description": "Bad Request"
           },
+
           "401": {
             "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
           },
+
           "500": {
             "description": "Internal Server Error"
           }
