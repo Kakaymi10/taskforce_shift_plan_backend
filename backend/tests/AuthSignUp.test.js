@@ -1,4 +1,5 @@
 const request = require('supertest');
+
 const API = 'http://localhost:3000';
 
 describe('Signup endpoint', () => {

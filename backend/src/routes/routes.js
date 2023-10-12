@@ -1,6 +1,6 @@
 const express = require('express');
-const authRoutes = require('./authRoutes');
 const swaggerUi = require('swagger-ui-express')
+const authRoutes = require('./authRoutes');
 const swaggerFile = require('../swagger/swagger-output.json');
 
 const router = express.Router();

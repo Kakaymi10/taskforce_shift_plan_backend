@@ -1,4 +1,5 @@
-const { hashPassword, generateToken } = require('../utils/auth-helper');
+const { hashPassword, generateToken, validateUser } = require('../utils/auth-helper');
+
 const db = require('../../models/index');
 // Import the email module
 const { sendConfirmationEmail } = require('../utils/emailConfirmation');
@@ -6,6 +7,8 @@ const { sendConfirmationEmail } = require('../utils/emailConfirmation');
 const { User } = db;
 
 class AuthController {
+
+
   static async signUp(req, res) {
     const { name, email, password } = req.body;
 
@@ -43,6 +46,7 @@ class AuthController {
   }
 
 
+
   static async confirmEmail(req, res) {
     const { token } = req.query;
 
@@ -62,6 +66,54 @@ class AuthController {
       return res.status(500).send({ message: err.message });
     }
   }
+
+  static async login(req, res) {
+    try{
+        const {email,password} = req.body;
+
+        const user = await User.findOne({
+            where: {
+                email,
+            },
+        });
+
+        if(!user){
+            return res.status(404).json({
+                status: 404,
+                error: 'User not found',
+            });
+        }
+        
+        const response = await validateUser(user.password, password);
+
+        
+
+         if(!response){
+            return res.status(400).json({
+                status: 400,
+                error: 'Invalid password',
+            });
+       }
+       
+            const token = generateToken(user);
+            return res.status(200).json({
+                status: 200,
+                message: 'User logged in successfully',
+                data: {
+                    token,
+                }
+              });            
+       
+
+    }catch(error){
+        return res.status(500).json({
+            status: 500,
+            error: error.message,
+        });
+    }
+
+}
+
 
 }
 
