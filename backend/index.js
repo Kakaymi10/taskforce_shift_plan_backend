@@ -14,10 +14,7 @@ const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to our app!!' });
-});
-
+app.use('/shift-planner/api/v1', allRoutes);
 
 const server = app.listen(PORT || 3000, () => {
   console.log(`Server started on port ${PORT}`);
@@ -33,8 +30,6 @@ const dbCon = async () => {
   } 
   
 };
-
-app.use('/shift-planner/api/v1', allRoutes);
 
 // START SERVER
 Promise.all([server, dbCon()]).catch((error) => {
