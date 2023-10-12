@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Role, {
         foreignKey: 'roleId',
         as: 'role',
-        onDelete: 'CASCADE'
+        onDelete: 'SET NULL'
       });
       User.belongsTo(models.Company, {
         foreignKey: 'companyId',
