@@ -59,7 +59,10 @@
             "name": "token",
             "in": "query",
             "type": "string"
-
+          }
+        ]
+      }
+    },  
     "/auth/login": {
       "post": {
         "description": "",
