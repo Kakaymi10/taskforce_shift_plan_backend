@@ -1,113 +1,179 @@
-const { Department } = require('../../models/index');
-const { createDepartmentSchema, updateDepartmentSchema } = require('./validations/departmentValidation');
+const request = require('supertest');
 
-class DepartmentController {
-  static async createDepartment(req, res) {
-    try {
-      const { name, companyId } = req.body;
+const API = 'http://localhost:3000';
 
-      // Validate request data using the Joi schema
-      const { error } = createDepartmentSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
+describe('Signup endpoint', () => {
+  it('should create a new user when provided with valid data', async () => {
+    const requestBody = {
+      name: 'Amina',
+      email: 'amina212@test.com',
+      password: '123456',
+    };
 
-      // Check if the department with the same name already exists
-      const existingDepartment = await Department.findOne({ where: { name } });
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
 
-      if (existingDepartment) {
-        return res.status(400).json({ error: 'Department with this name already exists' });
-      }
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toHaveProperty('message', 'User signed up successfully. Check your email for confirmation.');
+  });
 
-      const department = await Department.create({ name, companyId });
-      console.log('Department Created Successfully');
-      res.status(201).json({ success: 'Department created successfully', department });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to create department' });
-    }
-  }
+  it('should raise error if user already existed', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: 'amanw@test.com',
+      password: '123456',
+    };
 
-  static async getAllDepartments(req, res) {
-    try {
-      const departments = await Department.findAll();
-      res.status(200).json({ success: 'Fetched all departments successfully', departments });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to fetch departments' });
-    }
-  }
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
 
-  static async deleteAllDepartments(req, res) {
-    try {
-      await Department.destroy({ where: {} });
-      res.status(204).json({ success: 'Deleted all departments' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to delete all departments' });
-    }
-  }
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toHaveProperty('message', 'User already exists');
+  });
 
-  static async getDepartmentById(req, res) {
-    try {
-      const departmentId = req.params.id;
-      const department = await Department.findByPk(departmentId);
-      if (department) {
-        res.status(200).json({ success: 'Fetched department successfully', department });
-      } else {
-        res.status(404).json({ error: 'Department not found' });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to fetch department' });
-    }
-  }
+  it('should raise error when name is empty', async () => {
+    const requestBody = {
+      name: '',
+      email: 'example@test.com',
+      password: '123456',
+    };
 
-  static async updateDepartmentById(req, res) {
-    try {
-      const departmentId = req.params.id;
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
 
-      // Check if the department with the given ID exists
-      const department = await Department.findByPk(departmentId);
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('message', 'Name cannot be empty');
+  });
 
-      if (!department) {
-        return res.status(404).json({ error: 'Department not found' });
-      }
+  it('should raise an error when "name" is not a string', async () => {
+    const requestBody = {
+      name: 123,
+      email: 'aman@test.com',
+      password: '123456',
+    };
 
-      // Validate request data using the Joi schema
-      const { error } = updateDepartmentSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
 
-      const { name, companyId } = req.body;
-      await department.update({ name, companyId });
-      console.log('Updated');
-      res.status(200).json({ success: 'Updated department successfully', department });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to update department' });
-    }
-  }
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('message', 'Name should be a string');
+  });
 
-  static async deleteDepartmentById(req, res) {
-    try {
-      const departmentId = req.params.id;
+  it('should raise an error when "name" is missing in the request', async () => {
+    const requestBody = {
+      email: 'testuser@example.com',
+      password: 'password123',
+    };
 
-      // Check if the department with the given ID exists
-      const department = await Department.findByPk(departmentId);
+    const response = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
 
-      if (!department) {
-        return res.status(404).json({ error: 'Department not found' });
-      }
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toHaveProperty('message', 'Name is a required field');
+  });
 
-      await department.destroy();
-      res.status(204).json({ success: `Department with id: ${departmentId} deleted` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to delete department' });
-    }
-  }
-}
+  it('should raise an error when "email" is missing in the request', async () => {
+    const requestBody = {
+      name: 'Aman',
+      password: '123456',
+    };
 
-module.exports = DepartmentController;
+    const response = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toHaveProperty(
+      'message',
+      'Email is a required field',
+    );
+  });
+
+  it('should raise an error when "email" is not valid', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: 'amantest.com',
+      password: '123456',
+    };
+
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty(
+      'message',
+      'Email must be a valid email address',
+    );
+  });
+
+  it('should raise error when email is empty', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: '',
+      password: '123456',
+    };
+
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('message', 'Email cannot be empty');
+  });
+
+  it('should raise an error when "password" is missing in the request', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: 'testuser@example.com',
+    };
+
+    const response = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toHaveProperty(
+      'message',
+      'Password is a required field',
+    );
+  });
+
+  it('should raise error when password is empty', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: 'test@test.com',
+      password: '',
+    };
+
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('message', 'Password cannot be empty');
+  });
+
+  it('should raise error for a password with less than 6 characters', async () => {
+    const requestBody = {
+      name: 'Aman',
+      email: 'test@test.com',
+      password: '123',
+    };
+
+    const res = await request(API)
+      .post('/shift-planner/api/v1/auth/signup')
+      .send(requestBody);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty(
+      'message',
+      'Password should have a minimum length of 6',
+    );
+  });
+});
