@@ -1,7 +1,6 @@
+const generator = require('generate-password');
 const { hashPassword, generateToken, validateUser } = require('../utils/auth-helper');
-
 const db = require('../../models/index');
-// Import the email module
 const { sendConfirmationEmail } = require('../utils/emailConfirmation');
 
 const { User } = db;
@@ -16,7 +15,7 @@ class AuthController {
       const user = await User.findOne({ where: { email } });
 
       if (user) {
-        res.status(403).send({ message: 'User already exists', user });
+        res.status(403).send({ message: 'User already exists'});
       } else if (!user) {
         const confirmationToken = generateToken({ email });
         const hashedPassword = await hashPassword(password);
@@ -59,9 +58,10 @@ class AuthController {
         await user.save();
 
         return res.status(200).send('Email confirmed successfully.');
-      } else {
-        return res.status(400).send('Invalid confirmation token.');
-      }
+      } 
+        
+      return res.status(400).send('Invalid confirmation token.');
+     
     } catch (err) {
       return res.status(500).send({ message: err.message });
     }
@@ -114,6 +114,45 @@ class AuthController {
 
 }
 
+static async userInvite(req, res) {
+  const { name, email } = req.body;
+  const { companyId, departmentId } = req.query;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    if (user) {
+      res.status(403).send({ message: 'User already exists' });
+    } 
+    
+    if (!user) {
+      const password = generator.generate({
+        length: 10,
+        numbers: true
+      });
+      const confirmationToken = generateToken({ email });
+      const hashedPassword = await hashPassword(password);
+      const newUser = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        companyId,
+        departmentId,
+        token:  confirmationToken
+      });
+
+      const userToken = generateToken(newUser);
+      
+      res.status(201).send({
+        message: 'User created successfully!',
+        token: userToken,
+        user: { id: newUser.id, email: newUser.email, name: newUser.name, companyId: newUser.companyId, departmentId: newUser.departmentId },
+      });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+}
 
 }
 

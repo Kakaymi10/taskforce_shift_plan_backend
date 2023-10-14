@@ -10,5 +10,7 @@ router.get('/confirm-email', authClass.confirmEmail);
 
 router.post('/login',AuthValidations.login, authClass.login);
 
+router.post('/invite',AuthValidations.userInvite, authClass.userInvite);
+
 
 module.exports = router;

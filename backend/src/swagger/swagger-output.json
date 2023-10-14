@@ -50,7 +50,6 @@
         }
       }
     },
-
     "/auth/confirm-email": {
       "get": {
         "description": "",
@@ -59,7 +58,21 @@
             "name": "token",
             "in": "query",
             "type": "string"
-
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/auth/login": {
       "post": {
         "description": "",
@@ -78,7 +91,6 @@
                 }
               }
             }
-
           }
         ],
         "responses": {
@@ -88,14 +100,55 @@
           "400": {
             "description": "Bad Request"
           },
-
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
             "description": "Not Found"
           },
-
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/invite": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal Server Error"
           }
