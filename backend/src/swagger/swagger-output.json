@@ -50,8 +50,6 @@
         }
       }
     },
-<<<<<<< HEAD
-
     "/auth/confirm-email": {
       "get": {
         "description": "",
@@ -60,7 +58,21 @@
             "name": "token",
             "in": "query",
             "type": "string"
-
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/auth/login": {
 =======
     "/companies/": {
@@ -74,7 +86,6 @@
       }
     },
     "/companies/create": {
->>>>>>> c80cf32 (Committing changes before rebase)
       "post": {
         "description": "",
         "parameters": [
@@ -84,12 +95,10 @@
             "schema": {
               "type": "object",
               "properties": {
-<<<<<<< HEAD
                 "email": {
                   "example": "any"
                 },
                 "password": {
-=======
                 "name": {
                   "example": "any"
                 },
@@ -136,34 +145,175 @@
                   "example": "any"
                 },
                 "isApproved": {
->>>>>>> c80cf32 (Committing changes before rebase)
                   "example": "any"
                 }
               }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> c80cf32 (Committing changes before rebase)
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
-<<<<<<< HEAD
           "400": {
             "description": "Bad Request"
           },
-
-          "401": {
-            "description": "Unauthorized"
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/roles/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
           },
 
-=======
           "500": {
             "description": "Internal Server Error"
           }
@@ -185,7 +335,7 @@
           "200": {
             "description": "OK"
           },
->>>>>>> c80cf32 (Committing changes before rebase)
+
           "500": {
             "description": "Internal Server Error"
           }
