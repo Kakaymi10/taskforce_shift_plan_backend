@@ -35,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    isApproved: {
+    status: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false,      
     },
     createdAt: {
       allowNull: false,
