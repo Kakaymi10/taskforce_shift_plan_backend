@@ -44,6 +44,17 @@ static login = (req, res, next) => {
 
     return next();
   };
+static forgotPassword = (req, res, next) => {
+    const {email} = req.body;
+
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: "Email required" });
+    }
+
+    return next();
+  };
 }
 
 module.exports = AuthValidations;

@@ -2,7 +2,7 @@ const { hashPassword, generateToken, validateUser } = require('../utils/auth-hel
 
 const db = require('../../models/index');
 // Import the email module
-const { sendConfirmationEmail } = require('../utils/emailConfirmation');
+const { sendConfirmationEmail } = require('../utils/emailUtils/emailConfirmation');
 
 const { User } = db;
 
@@ -109,9 +109,36 @@ class AuthController {
         return res.status(500).json({
             status: 500,
             error: error.message,
-        });
+        })
     }
 
+}
+
+static async forgotPassword(req, res) {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (user) {
+      // After successfully creating the user, send a confirmation email
+      const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/confirm-email?token=${user.token}`;
+      await sendConfirmationEmail(user.email, user.name, confirmationLink);
+
+      res.status(201).send({
+        message: 'Check your email for confirmation to change the password.',
+        user,
+      });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        error: 'Account does not exist',
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: error.message,
+    });
+  }
 }
 
 
