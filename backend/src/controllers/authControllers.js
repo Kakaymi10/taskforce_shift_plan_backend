@@ -6,8 +6,6 @@ const { sendConfirmationEmail, sendInvitationEmail } = require('../utils/emailCo
 const { User } = db;
 
 class AuthController {
-
-
   static async signUp(req, res) {
     const { name, email, password } = req.body;
 
@@ -53,15 +51,15 @@ class AuthController {
       const user = await User.findOne({ where: { token: token } });
 
       if (user) {
-        // Update the 'confirmedAt' field with the current date and time
+
         user.confirmedAt = new Date().toISOString();;
         await user.save();
 
         return res.status(200).send('Email confirmed successfully.');
-      } 
-        
-      return res.status(400).send('Invalid confirmation token.');
-     
+      }
+
+        return res.status(400).send('Invalid confirmation token.');
+
     } catch (err) {
       return res.status(500).send({ message: err.message });
     }
@@ -157,7 +155,6 @@ static async userInvite(req, res) {
     res.status(500).send({ message: err.message });
   }
 }
-
 }
 
 module.exports = AuthController;

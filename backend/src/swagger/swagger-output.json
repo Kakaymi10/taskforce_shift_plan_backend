@@ -166,6 +166,7 @@
         }
       }
     },
+    "/users/": {
     "/roles/": {
       "get": {
         "description": "",
@@ -177,6 +178,36 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/users/user": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
       },
       "post": {
         "description": "",
@@ -192,6 +223,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "roleId": {
+                  "example": "any"
+                },
+                "departmentId": {
                 "name": {
                   "example": "any"
                 },
@@ -203,6 +238,8 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
           "201": {
             "description": "Created"
           },
@@ -216,6 +253,13 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
       }
     },
     "/roles/{id}": {
