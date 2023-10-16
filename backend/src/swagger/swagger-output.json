@@ -148,7 +148,6 @@
                 }
               }
             }
-
           }
         ],
         "responses": {
@@ -241,6 +240,20 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/auth/invite": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
       },
       "put": {
         "description": "",
@@ -265,6 +278,7 @@
                 "name": {
                   "example": "any"
                 },
+                "email": {
                 "description": {
                   "example": "any"
                 }
@@ -273,6 +287,11 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           "200": {
             "description": "OK"
           },
@@ -334,7 +353,6 @@
           "200": {
             "description": "OK"
           },
-
           "500": {
             "description": "Internal Server Error"
           }
