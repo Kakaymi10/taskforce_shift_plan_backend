@@ -1,7 +1,7 @@
 const generator = require('generate-password');
 const { hashPassword, generateToken, validateUser } = require('../utils/auth-helper');
 const db = require('../../models/index');
-const { sendConfirmationEmail } = require('../utils/emailConfirmation');
+const { sendConfirmationEmail, sendInvitationEmail } = require('../utils/emailConfirmation');
 
 const { User } = db;
 
@@ -140,6 +140,10 @@ static async userInvite(req, res) {
         departmentId,
         token:  confirmationToken
       });
+
+      const loginLink = `http://localhost:3000/shift-planner/api/v1/auth/login?token=${newUser.token}`;
+      await sendConfirmationEmail(newUser.email, newUser.name, loginLink, password);
+
 
       const userToken = generateToken(newUser);
       
