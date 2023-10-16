@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 function generateToken(user) {
-return jwt.sign({ userID: user.id, userEmail: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
+return jwt.sign({ userID: user.id, userEmail: user.email, roleId: user.roleId }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 }
 
 async function hashPassword(password) {
@@ -17,8 +17,7 @@ async function validateUser(hash, password) {
 
     const res = await bcrypt.compare(password, hash);    
     return res;
-  } catch (err){
-    console.log(err);
+  } catch (err){  
  return false;
   }
  

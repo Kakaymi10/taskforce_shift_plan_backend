@@ -20,7 +20,7 @@ class AuthController {
         const hashedPassword = await hashPassword(password);
         const newUser = await User.create({
           name,
-          email,
+          email,                
           password: hashedPassword,
           token:  confirmationToken
         });
@@ -35,7 +35,7 @@ class AuthController {
         res.status(201).send({
           message: 'User signed up successfully. Check your email for confirmation.',
           token: userToken,
-          user: { id: newUser.id, email: newUser.email, name: newUser.name },
+          user: { id: newUser.id, email: newUser.email, name: newUser.name ,},
         });
       }
     } catch (err) {
