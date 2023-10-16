@@ -74,6 +74,17 @@
       }
     },
     "/auth/login": {
+    "/companies/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/companies/create": {
       "post": {
         "description": "",
         "parameters": [
@@ -87,10 +98,57 @@
                   "example": "any"
                 },
                 "password": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
                   "example": "any"
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
+                }
+              }
+            }
+
           }
         ],
         "responses": {
@@ -254,6 +312,29 @@
           "404": {
             "description": "Not Found"
           },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/delete/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
           "500": {
             "description": "Internal Server Error"
           }
