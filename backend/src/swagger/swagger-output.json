@@ -3,17 +3,15 @@
   "info": {
     "title": "Shift Planner API",
     "version": "1.0.0",
-    "description": ""
+    "description": "API documentation for Shift Planner"
   },
   "host": "localhost:3000",
   "basePath": "/shift-planner/api/v1",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/auth/signup": {
       "post": {
-        "description": "",
+        "description": "Create a new user account",
         "parameters": [
           {
             "name": "body",
@@ -22,12 +20,15 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "type": "string",
                   "example": "any"
                 },
                 "email": {
+                  "type": "string",
                   "example": "any"
                 },
                 "password": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -52,7 +53,7 @@
     },
     "/auth/confirm-email": {
       "get": {
-        "description": "",
+        "description": "Confirm email with a token",
         "parameters": [
           {
             "name": "token",
@@ -74,8 +75,28 @@
       }
     },
     "/auth/login": {
+      "get": {
+        "description": "Login with user credentials",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/companies/": {
+      "get": {
+        "description": "Get a list of companies",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/companies/create": {
       "post": {
-        "description": "",
+        "description": "Create a new company",
         "parameters": [
           {
             "name": "body",
@@ -84,9 +105,61 @@
               "type": "object",
               "properties": {
                 "email": {
+                  "type": "string",
                   "example": "any"
                 },
                 "password": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "isApproved": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/update/{id}": {
+      "put": {
+        "description": "Update a company by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "isApproved": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -110,8 +183,42 @@
       }
     },
     "/departments/": {
+      "get": {
+        "description": "Get a list of departments",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/departments/{id}": {
+      "get": {
+        "description": "Get department by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/create": {
       "post": {
-        "description": "",
+        "description": "Create a new department",
         "parameters": [
           {
             "name": "body",
@@ -120,9 +227,11 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "type": "string",
                   "example": "any"
                 },
                 "companyId": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -140,55 +249,11 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
     },
-    "/departments/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
+    "/departments/update/{id}": {
       "put": {
-        "description": "",
+        "description": "Update a department by ID",
         "parameters": [
           {
             "name": "id",
@@ -203,9 +268,11 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "type": "string",
                   "example": "any"
                 },
                 "companyId": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -226,9 +293,11 @@
             "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/departments/delete/{id}": {
       "delete": {
-        "description": "",
+        "description": "Delete a department by ID",
         "parameters": [
           {
             "name": "id",
@@ -238,8 +307,89 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/invite": {
+      "post": {
+        "description": "Invite a user to a department",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "email": {
+                  "description": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/delete/{id}": {
+      "delete": {
+        "description": "Delete a user from a department",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -252,3 +402,4 @@
     }
   }
 }
+
