@@ -74,7 +74,6 @@
       }
     },
     "/auth/login": {
-=======
     "/companies/": {
       "get": {
         "description": "",
