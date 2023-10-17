@@ -11,7 +11,6 @@
     "dev": "npm run babel && nodemon --exec babel-node index.js",
     "lint": "eslint --fix \"**/*.js\"",
     "format": "npm run lint && prettier --write \"**/*.js\"",
-    "prepare": "husky install",
     "build": "rm -rf build && babel src -d build --presets @babel/preset-env",
     "start": "npm run build && node build/index.js",
     "migrate": "npx sequelize-cli db:migrate",

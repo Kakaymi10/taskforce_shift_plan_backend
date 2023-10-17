@@ -9,28 +9,29 @@ class CompanyController {
     }
 
     static async createCompany(req, res) {
-        try {
-            const { name, address, isApproved } = req.body;
-            const company = await Company.create({
-                name,
-                address,
-                isApproved
-            });
-          return res.status(201).send({ message: 'Company is created', company });
-        } catch (error) {
-            console.log(error)
-            return res.status(500).send({ message: 'Error creating company', error });
-        }
+      try {
+        const { name, address} = req.body; 
+
+    
+        const company = await Company.create({
+          name,
+          address,
+        
+        });
+            return res.status(201).json({ message: 'Company created successfully', company });
+      } catch (error) {
+        console.error('Error creating company:', error);
+        return res.status(500).json({ message: 'Error creating company', error: error.message });
+      }
     }
-
-
+    
     static async updateCompany(req, res) {
         try {
             const { id } = req.params;
-            const { name, address, isApproved } = req.body;
+            const { name, address} = req.body;
 
             const updatedCompany = await Company.update(
-                { name, address, isApproved },
+                { name, address},
                 { where: { id }, returning: true, plain: true }
             );
 
@@ -68,6 +69,48 @@ class CompanyController {
             return res.status(500).send({ message: 'Error fetching company', error });
         }
     }
-}
+        static async approveCompany(req, res) {
+            try {
+              const { id } = req.params;
+        
+              const company = await Company.findByPk(id);
+        
+              if (!company) {
+                return res.status(404).send({ message: 'Company not found' });
+              }
+        
+              const updatedCompany = await company.update({
+                status: 'Approved'
+              });
+        
+              return res.status(200).send({ message: 'Company is approved', company: updatedCompany });
+            } catch (error) {
+              console.error(error);
+              return res.status(500).send({ message: 'Error approving company', error });
+            }
+          }
+        
+          static async rejectCompany(req, res) {
+            try {
+              const { id } = req.params;
+        
+              const company = await Company.findByPk(id);
+        
+              if (!company) {
+                return res.status(404).send({ message: 'Company not found' });
+              }
+        
+              const updatedCompany = await company.update({
+                status: 'Rejected'
+              });
+        
+              return res.status(200).send({ message: 'Company is rejected', company: updatedCompany });
+            } catch (error) {
+              console.error(error);
+              return res.status(500).send({ message: 'Error rejecting company', error });
+            }
+          }
+    }
+
 
 module.exports = CompanyController;

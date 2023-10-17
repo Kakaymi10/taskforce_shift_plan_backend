@@ -94,6 +94,18 @@
         "responses": {
           "200": {
             "description": "OK"
+<<<<<<< HEAD
+=======
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+>>>>>>> 7a12796 (commiting changes before rebase)
           }
         }
       }
@@ -118,16 +130,16 @@
             "schema": {
               "type": "object",
               "properties": {
+<<<<<<< HEAD
                 "email": {
                   "example": "any"
                 },
+=======
+>>>>>>> 7a12796 (commiting changes before rebase)
                 "name": {
                   "example": "any"
                 },
                 "address": {
-                  "example": "any"
-                },
-                "isApproved": {
                   "example": "any"
                 }
               }
@@ -165,9 +177,12 @@
                 },
                 "address": {
                   "example": "any"
+<<<<<<< HEAD
                 },
                 "isApproved": {
                   "example": "any"
+=======
+>>>>>>> 7a12796 (commiting changes before rebase)
                 }
               }
             }
@@ -177,6 +192,7 @@
           "200": {
             "description": "OK"
           },
+<<<<<<< HEAD
           "400": {
             "description": "Bad Request"
           },
@@ -416,6 +432,8 @@
           "404": {
             "description": "Not Found"
           },
+=======
+>>>>>>> 7a12796 (commiting changes before rebase)
           "500": {
             "description": "Internal Server Error"
           }
@@ -443,6 +461,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "/departments/": {
       "get": {
         "description": "Get a list of departments",
@@ -515,12 +534,18 @@
     "/departments/update/{id}": {
       "put": {
         "description": "Update a department by ID",
+=======
+    "/companies/{id}/approve": {
+      "put": {
+        "description": "",
+>>>>>>> 7a12796 (commiting changes before rebase)
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+<<<<<<< HEAD
           },
           {
             "name": "body",
@@ -538,15 +563,20 @@
                 }
               }
             }
+=======
+>>>>>>> 7a12796 (commiting changes before rebase)
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
+<<<<<<< HEAD
           "400": {
             "description": "Bad Request"
           },
+=======
+>>>>>>> 7a12796 (commiting changes before rebase)
           "404": {
             "description": "Not Found"
           },
@@ -556,9 +586,15 @@
         }
       }
     },
+<<<<<<< HEAD
     "/departments/delete/{id}": {
       "delete": {
         "description": "Delete a department by ID",
+=======
+    "/companies/{id}/reject": {
+      "put": {
+        "description": "",
+>>>>>>> 7a12796 (commiting changes before rebase)
         "parameters": [
           {
             "name": "id",
@@ -571,6 +607,12 @@
           "200": {
             "description": "OK"
           },
+<<<<<<< HEAD
+=======
+          "404": {
+            "description": "Not Found"
+          },
+>>>>>>> 7a12796 (commiting changes before rebase)
           "500": {
             "description": "Internal Server Error"
           }
