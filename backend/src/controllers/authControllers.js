@@ -5,6 +5,7 @@ const db = require('../../models/index');
 const { sendConfirmationEmail } = require('../utils/emailConfirmation');
 
 const { User } = db;
+require('dotenv').config();
 
 class AuthController {
 
@@ -119,12 +120,15 @@ static async forgotPassword(req, res) {
   try {
     const user = await User.findOne({ where: { email } });
     if (user) {
-      // After successfully creating the user, send a confirmation email
-      const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/resetpassword?token=${user.token}`;
-      const emailTemplatePath = './src/utils/forgotPasswordEmailConfirmation.hbs'; // Correct the path
+      const resetToken = generateToken({ email });
+      user.resetToken = resetToken;
+      await user.save();
+
+      const confirmationLink = `${process.env.BACKEND_URL}/shift-planner/api/v1/auth/resetpassword?token=${resetToken}`;
+      const emailTemplatePath = './src/utils/forgotPasswordEmailConfirmation.hbs';
       await sendConfirmationEmail(user.email, user.name, confirmationLink, emailTemplatePath);
 
-      res.status(201).send({
+      res.status(200).send({
         message: 'Check your email for confirmation to change the password.',
         user,
       });
@@ -146,11 +150,11 @@ static async resetPassword(req, res) {
   const { token } = req.query;
   
   try {
-    const user = await User.findOne({ where: { token: token } });
+    const user = await User.findOne({ where: { resetToken: token } });
 
     if (user) {
       
-      const newPassword = 'newPassword'; // Replace with user-provided new password
+      const { newPassword } = req.body;
       const hashedPassword = await hashPassword(newPassword);
       user.password = hashedPassword;
       await user.save();
