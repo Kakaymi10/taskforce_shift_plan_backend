@@ -36,4 +36,3 @@ const checkUserRole = (...roles) => async (req, res, next) => {
 
 
 module.exports = checkUserRole;
-
