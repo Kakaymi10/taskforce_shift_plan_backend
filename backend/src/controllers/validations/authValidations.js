@@ -21,6 +21,25 @@ const signUpSchema = Joi.object({
   }),
 });
 
+const forgotPasswordSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.base": "Email should be a string",
+    "string.email": "Email must be a valid email address",
+    "string.empty": "Email cannot be empty",
+    "any.required": "Email is a required field",
+  }),
+});
+
+const resetSchema = Joi.object({
+  newPassword: Joi.string().required().min(6).messages({
+    "string.base": "New password should be a string",
+    "string.empty": "New password cannot be empty",
+    "string.min": "New password should have a minimum length of {#limit}",
+    "any.required": "New password is a required field",
+  }),
+});
+
+
 class AuthValidations {
   static signUp = (req, res, next) => {
     const { error } = signUpSchema.validate(req.body);
@@ -44,13 +63,25 @@ static login = (req, res, next) => {
 
     return next();
   };
-static forgotPassword = (req, res, next) => {
-    const {email} = req.body;
+  static forgotPassword = (req, res, next) => {
+    const { email } = req.body;
+    const { error } = forgotPasswordSchema.validate({ email });
 
-    if (!email) {
-      return res
-        .status(400)
-        .json({ message: "Email required" });
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({ message: errorMessage });
+    }
+
+    return next();
+  };
+
+  static reset = (req, res, next) => {
+    const { newPassword } = req.body;
+    const { error } = resetSchema.validate({ newPassword });
+
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({ message: errorMessage });
     }
 
     return next();

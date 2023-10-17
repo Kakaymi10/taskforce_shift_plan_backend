@@ -2,7 +2,7 @@ const { hashPassword, generateToken, validateUser } = require('../utils/auth-hel
 
 const db = require('../../models/index');
 // Import the email module
-const { sendConfirmationEmail } = require('../utils/emailUtils/emailConfirmation');
+const { sendConfirmationEmail } = require('../utils/emailConfirmation');
 
 const { User } = db;
 
@@ -120,8 +120,9 @@ static async forgotPassword(req, res) {
     const user = await User.findOne({ where: { email } });
     if (user) {
       // After successfully creating the user, send a confirmation email
-      const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/confirm-email?token=${user.token}`;
-      await sendConfirmationEmail(user.email, user.name, confirmationLink);
+      const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/resetpassword?token=${user.token}`;
+      const emailTemplatePath = './src/utils/forgotPasswordEmailConfirmation.hbs'; // Correct the path
+      await sendConfirmationEmail(user.email, user.name, confirmationLink, emailTemplatePath);
 
       res.status(201).send({
         message: 'Check your email for confirmation to change the password.',
@@ -138,6 +139,28 @@ static async forgotPassword(req, res) {
       status: 500,
       error: error.message,
     });
+  }
+}
+
+static async resetPassword(req, res) {
+  const { token } = req.query;
+  
+  try {
+    const user = await User.findOne({ where: { token: token } });
+
+    if (user) {
+      
+      const newPassword = 'newPassword'; // Replace with user-provided new password
+      const hashedPassword = await hashPassword(newPassword);
+      user.password = hashedPassword;
+      await user.save();
+
+      return res.status(200).send('Password reset successfully.');
+    } else {
+      return res.status(400).send('Invalid reset token.');
+    }
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
   }
 }
 

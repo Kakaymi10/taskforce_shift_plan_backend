@@ -10,6 +10,6 @@ router.get('/confirm-email', authClass.confirmEmail);
 
 router.post('/login',AuthValidations.login, authClass.login);
 router.post('/forgotpassword',AuthValidations.forgotPassword, authClass.forgotPassword);
-
+router.put('/resetpassword', AuthValidations.reset, authClass.resetPassword)
 
 module.exports = router;
