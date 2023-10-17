@@ -3,15 +3,17 @@
   "info": {
     "title": "Shift Planner API",
     "version": "1.0.0",
-    "description": "API for managing shifts, companies, departments, and roles."
+    "description": ""
   },
   "host": "localhost:3000",
   "basePath": "/shift-planner/api/v1",
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/auth/signup": {
       "post": {
-        "summary": "Create a new user",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -20,15 +22,12 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string",
                   "example": "any"
                 },
                 "email": {
-                  "type": "string",
                   "example": "any"
                 },
                 "password": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -53,7 +52,7 @@
     },
     "/auth/confirm-email": {
       "get": {
-        "summary": "Confirm a user's email with a token",
+        "description": "",
         "parameters": [
           {
             "name": "token",
@@ -76,7 +75,7 @@
     },
     "/auth/login": {
       "post": {
-        "summary": "Log in a user with email and password",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -85,108 +84,10 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "type": "string",
                   "example": "any"
                 },
                 "password": {
-                  "type": "string",
                   "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/companies/": {
-      "get": {
-        "summary": "Get a list of companies",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a new company",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "name": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "address": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "isApproved": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/companies/update/{id}": {
-      "put": {
-        "summary": "Update a company by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "address": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "isApproved": {
-                  "type": "boolean",
-                  "example": true
                 }
               }
             }
@@ -208,17 +109,88 @@
         }
       }
     },
-    "/roles/": {
-      "get": {
-        "summary": "Get a list of roles",
+    "/auth/forgotpassword": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/resetpassword": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newPassword": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/roles/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "post": {
-        "summary": "Create a new role",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -232,11 +204,9 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string",
                   "example": "any"
                 },
                 "description": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -261,7 +231,7 @@
     },
     "/roles/{id}": {
       "get": {
-        "summary": "Get a role by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -283,7 +253,7 @@
         }
       },
       "put": {
-        "summary": "Update a role by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -303,11 +273,9 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string",
                   "example": "any"
                 },
                 "description": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -330,7 +298,7 @@
         }
       },
       "delete": {
-        "summary": "Delete a role by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -360,9 +328,91 @@
         }
       }
     },
+    "/companies/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/companies/create": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/companies/delete/{id}": {
       "delete": {
-        "summary": "Delete a company by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -383,4 +433,3 @@
     }
   }
 }
-
