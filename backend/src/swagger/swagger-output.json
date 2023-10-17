@@ -3,7 +3,7 @@
   "info": {
     "title": "Shift Planner API",
     "version": "1.0.0",
-    "description": "API documentation for Shift Planner"
+    "description": ""
   },
   "host": "localhost:3000",
   "basePath": "/shift-planner/api/v1",
@@ -11,7 +11,7 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "description": "Create a new user account",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -20,15 +20,12 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string",
                   "example": "any"
                 },
                 "email": {
-                  "type": "string",
                   "example": "any"
                 },
                 "password": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -53,7 +50,7 @@
     },
     "/auth/confirm-email": {
       "get": {
-        "description": "Confirm email with a token",
+        "description": "",
         "parameters": [
           {
             "name": "token",
@@ -75,8 +72,25 @@
       }
     },
     "/auth/login": {
-      "get": {
-        "description": "Login with user credentials",
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -86,7 +100,7 @@
     },
     "/companies/": {
       "get": {
-        "description": "Get a list of companies",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -96,7 +110,7 @@
     },
     "/companies/create": {
       "post": {
-        "description": "Create a new company",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -105,19 +119,15 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "type": "string",
                   "example": "any"
                 },
-                "password": {
-                  "type": "string",
+                "name": {
                   "example": "any"
                 },
                 "address": {
-                  "type": "string",
                   "example": "any"
                 },
                 "isApproved": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -136,7 +146,7 @@
     },
     "/companies/update/{id}": {
       "put": {
-        "description": "Update a company by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -151,15 +161,12 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string",
                   "example": "any"
                 },
                 "address": {
-                  "type": "string",
                   "example": "any"
                 },
                 "isApproved": {
-                  "type": "string",
                   "example": "any"
                 }
               }
@@ -175,6 +182,260 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/user": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query"
+          }
+        ],
+        "post": {
+          "description": "",
+          "parameters": [
+            {
+              "name": "authorization",
+              "in": "header",
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "example": "any"
+                  },
+                  "departmentId": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "201": {
+              "description": "Created"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "delete": {
+          "description": "",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query"
+            }
+          ]
+        }
+      }
+    },
+    "/roles/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/invite": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query"
+          }
+        ]
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/delete/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -315,91 +576,6 @@
           }
         }
       }
-    },
-    "/departments/invite": {
-      "post": {
-        "description": "Invite a user to a department",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "any"
-                },
-                "email": {
-                  "description": "string",
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/departments/delete/{id}": {
-      "delete": {
-        "description": "Delete a user from a department",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
     }
   }
 }
-
