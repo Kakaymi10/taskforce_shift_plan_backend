@@ -9,14 +9,14 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
-      - DB_NAME=sdvvlfvu
-      - DB_PASSWORD=e-tXA8_NwTGLhqU0JfDcJ7YaZKZB91Hf
+      - DB_NAME=''
+      - DB_PASSWORD=''
       - DB_USER=sdvvlfvu
       - DB_HOST=peanut.db.elephantsql.com
-      - JWT_SECRET_KEY=asdfghjkl
+      - JWT_SECRET_KEY=''
       - EMAIL_SERVICE=Gmail
-      - EMAIL_USER=moussamoustaphamoussa37@gmail.com
-      - EMAIL_PASSWORD=gzzp cuti kvxt ubio
+      - EMAIL_USER=''
+      - EMAIL_PASSWORD=''
     depends_on:
       - postgres
 
