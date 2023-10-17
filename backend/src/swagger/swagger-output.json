@@ -177,6 +177,7 @@
         }
       }
     },
+    "/users/": {
     "/roles/": {
       "get": {
         "description": "",
@@ -188,6 +189,36 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/users/user": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
       },
       "post": {
         "description": "",
@@ -203,6 +234,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "roleId": {
+                  "example": "any"
+                },
+                "departmentId": {
                 "name": {
                   "example": "any"
                 },
@@ -214,6 +249,8 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
           "201": {
             "description": "Created"
           },
@@ -227,6 +264,13 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
       }
     },
     "/roles/{id}": {
@@ -251,6 +295,20 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/auth/invite": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
       },
       "put": {
         "description": "",
@@ -275,6 +333,7 @@
                 "name": {
                   "example": "any"
                 },
+                "email": {
                 "description": {
                   "example": "any"
                 }
@@ -283,6 +342,11 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           "200": {
             "description": "OK"
           },
