@@ -7,9 +7,7 @@
   },
   "host": "localhost:3000",
   "basePath": "/shift-planner/api/v1",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/auth/signup": {
       "post": {
@@ -74,6 +72,32 @@
       }
     },
     "/auth/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/companies/": {
       "get": {
         "description": "",
@@ -97,7 +121,6 @@
                 "email": {
                   "example": "any"
                 },
-                "password": {
                 "name": {
                   "example": "any"
                 },
@@ -167,15 +190,11 @@
       }
     },
     "/users/": {
-    "/roles/": {
       "get": {
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -207,44 +226,71 @@
         "parameters": [
           {
             "name": "email",
-            "in": "query",
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "roleId": {
-                  "example": "any"
-                },
-                "departmentId": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
+            "in": "query"
+          }
+        ],
+        "post": {
+          "description": "",
+          "parameters": [
+            {
+              "name": "authorization",
+              "in": "header",
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "example": "any"
+                  },
+                  "departmentId": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  }
                 }
               }
             }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "201": {
+              "description": "Created"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
           }
-        ],
+        },
+        "delete": {
+          "description": "",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query"
+            }
+          ]
+        }
+      }
+    },
+    "/roles/": {
+      "get": {
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
-          "201": {
-            "description": "Created"
-          },
-          "403": {
-            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -253,13 +299,6 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
       }
     },
     "/roles/{id}": {
@@ -297,7 +336,9 @@
           },
           {
             "name": "departmentId",
-            "in": "query",
+            "in": "query"
+          }
+        ]
       },
       "put": {
         "description": "",
@@ -323,7 +364,6 @@
                   "example": "any"
                 },
                 "email": {
-                "description": {
                   "example": "any"
                 }
               }
@@ -336,6 +376,7 @@
           },
           "400": {
             "description": "Bad Request"
+          },
           "200": {
             "description": "OK"
           },
@@ -375,7 +416,6 @@
           "404": {
             "description": "Not Found"
           },
-
           "500": {
             "description": "Internal Server Error"
           }
@@ -385,6 +425,140 @@
     "/companies/delete/{id}": {
       "delete": {
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/": {
+      "get": {
+        "description": "Get a list of departments",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/departments/{id}": {
+      "get": {
+        "description": "Get department by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/create": {
+      "post": {
+        "description": "Create a new department",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "companyId": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/update/{id}": {
+      "put": {
+        "description": "Update a department by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "companyId": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/departments/delete/{id}": {
+      "delete": {
+        "description": "Delete a department by ID",
         "parameters": [
           {
             "name": "id",
