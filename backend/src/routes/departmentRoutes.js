@@ -1,7 +1,7 @@
 const express = require('express');
-const RoleController = require('../controllers/roleControllers');
-const checkUserRole = require('../middlewares/checkUserRole');
 
+const checkUserRole = require('../middlewares/checkUserRole');
+const DepartmentController = require('../controllers/departmentControllers');
 const router = express.Router();
 
 
