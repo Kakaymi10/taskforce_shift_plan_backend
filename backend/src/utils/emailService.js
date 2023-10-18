@@ -1,5 +1,3 @@
-// utils/emailService.js
-
 const nodemailer = require('nodemailer');
 const fs = require('fs/promises');
 
@@ -17,6 +15,7 @@ async function loadEmailTemplate(emailTemplatePath) {
     return templateFile;
   } catch (error) {
     console.error('Error loading email template:', error);
+    return error.message;
   }
 }
 

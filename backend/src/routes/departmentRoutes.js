@@ -1,7 +1,8 @@
 const express = require('express');
+const RoleController = require('../controllers/roleControllers');
+const checkUserRole = require('../middlewares/checkUserRole');
+
 const router = express.Router();
-const DepartmentController = require('../controllers/departmentControllers');
-const checkUserRole = require('../middlewares/checkUserRole'); 
 
 
 router.post('/', checkUserRole(['Admin', 'Manager']), DepartmentController.createDepartment);
