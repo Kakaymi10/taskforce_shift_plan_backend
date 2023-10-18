@@ -4,6 +4,7 @@ const db = require('../../models/index');
 const { sendConfirmationEmail, sendInvitationEmail } = require('../utils/emailConfirmation');
 
 const { User } = db;
+require('dotenv').config();
 
 class AuthController {
   static async signUp(req, res) {
@@ -107,10 +108,66 @@ class AuthController {
         return res.status(500).json({
             status: 500,
             error: error.message,
-        });
+        })
     }
 
 }
+
+
+static async forgotPassword(req, res) {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (user) {
+      const resetToken = generateToken({ email });
+      user.resetToken = resetToken;
+      await user.save();
+
+      const confirmationLink = `${process.env.BACKEND_URL}/shift-planner/api/v1/auth/resetpassword?token=${resetToken}`;
+      const emailTemplatePath = './src/utils/forgotPasswordEmailConfirmation.hbs';
+      await sendConfirmationEmail(user.email, user.name, confirmationLink, emailTemplatePath);
+
+      res.status(200).send({
+        message: 'Check your email for confirmation to change the password.',
+        user,
+      });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        error: 'Account does not exist',
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: error.message,
+    });
+  }
+}
+
+static async resetPassword(req, res) {
+  const { token } = req.query;
+  
+  try {
+    const user = await User.findOne({ where: { resetToken: token } });
+
+    if (user) {
+      
+      const { newPassword } = req.body;
+      const hashedPassword = await hashPassword(newPassword);
+      user.password = hashedPassword;
+      await user.save();
+
+      return res.status(200).send('Password reset successfully.');
+    } else {
+      return res.status(400).send('Invalid reset token.');
+    }
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+}
+
+
 
 static async userInvite(req, res) {
   const { name, email } = req.body;
@@ -155,6 +212,7 @@ static async userInvite(req, res) {
     res.status(500).send({ message: err.message });
   }
 }
+
 }
 
 module.exports = AuthController;
