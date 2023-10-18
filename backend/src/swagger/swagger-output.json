@@ -94,8 +94,6 @@
         "responses": {
           "200": {
             "description": "OK"
-<<<<<<< HEAD
-=======
           },
           "400": {
             "description": "Bad Request"
@@ -105,7 +103,6 @@
           },
           "500": {
             "description": "Internal Server Error"
->>>>>>> 7a12796 (commiting changes before rebase)
           }
         }
       }
@@ -113,14 +110,40 @@
     "/companies/": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/companies/create": {
+    "/auth/forgotpassword": {
       "post": {
         "description": "",
         "parameters": [
@@ -130,12 +153,9 @@
             "schema": {
               "type": "object",
               "properties": {
-<<<<<<< HEAD
                 "email": {
                   "example": "any"
                 },
-=======
->>>>>>> 7a12796 (commiting changes before rebase)
                 "name": {
                   "example": "any"
                 },
@@ -150,20 +170,25 @@
           "201": {
             "description": "Created"
           },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       }
     },
-    "/companies/update/{id}": {
+    "/auth/resetpassword": {
       "put": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "token",
+            "in": "query",
             "type": "string"
           },
           {
@@ -177,12 +202,10 @@
                 },
                 "address": {
                   "example": "any"
-<<<<<<< HEAD
                 },
                 "isApproved": {
+                "newPassword": {
                   "example": "any"
-=======
->>>>>>> 7a12796 (commiting changes before rebase)
                 }
               }
             }
@@ -192,12 +215,8 @@
           "200": {
             "description": "OK"
           },
-<<<<<<< HEAD
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -432,8 +451,88 @@
           "404": {
             "description": "Not Found"
           },
-=======
->>>>>>> 7a12796 (commiting changes before rebase)
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/companies/create": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -461,7 +560,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "/departments/": {
       "get": {
         "description": "Get a list of departments",
@@ -534,18 +632,15 @@
     "/departments/update/{id}": {
       "put": {
         "description": "Update a department by ID",
-=======
     "/companies/{id}/approve": {
       "put": {
         "description": "",
->>>>>>> 7a12796 (commiting changes before rebase)
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
-<<<<<<< HEAD
           },
           {
             "name": "body",
@@ -563,20 +658,16 @@
                 }
               }
             }
-=======
->>>>>>> 7a12796 (commiting changes before rebase)
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
-<<<<<<< HEAD
           "400": {
             "description": "Bad Request"
           },
-=======
->>>>>>> 7a12796 (commiting changes before rebase)
+
           "404": {
             "description": "Not Found"
           },
@@ -586,15 +677,12 @@
         }
       }
     },
-<<<<<<< HEAD
     "/departments/delete/{id}": {
       "delete": {
         "description": "Delete a department by ID",
-=======
     "/companies/{id}/reject": {
       "put": {
         "description": "",
->>>>>>> 7a12796 (commiting changes before rebase)
         "parameters": [
           {
             "name": "id",
@@ -607,12 +695,10 @@
           "200": {
             "description": "OK"
           },
-<<<<<<< HEAD
-=======
+
           "404": {
             "description": "Not Found"
           },
->>>>>>> 7a12796 (commiting changes before rebase)
           "500": {
             "description": "Internal Server Error"
           }
