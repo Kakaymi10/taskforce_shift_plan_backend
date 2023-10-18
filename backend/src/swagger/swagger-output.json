@@ -94,6 +94,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -152,9 +161,6 @@
                 },
                 "address": {
                   "example": "any"
-                },
-                "isApproved": {
-                  "example": "any"
                 }
               }
             }
@@ -191,6 +197,13 @@
             "schema": {
               "type": "object",
               "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
                 "newPassword": {
                   "example": "any"
                 }
@@ -619,6 +632,9 @@
     "/departments/update/{id}": {
       "put": {
         "description": "Update a department by ID",
+    "/companies/{id}/approve": {
+      "put": {
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -651,6 +667,7 @@
           "400": {
             "description": "Bad Request"
           },
+
           "404": {
             "description": "Not Found"
           },
@@ -663,6 +680,9 @@
     "/departments/delete/{id}": {
       "delete": {
         "description": "Delete a department by ID",
+    "/companies/{id}/reject": {
+      "put": {
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -674,6 +694,10 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
