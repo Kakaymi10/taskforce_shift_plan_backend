@@ -87,6 +87,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'Not yet',
       field: 'confirmedAt',
+    },
+    resetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'resetToken',
     }
   }, {
     timestamps: true,    

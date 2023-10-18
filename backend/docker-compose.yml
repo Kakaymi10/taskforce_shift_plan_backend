@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  node_app:
+    container_name: tf_backend
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DB_NAME=''
+      - DB_PASSWORD=''
+      - DB_USER=sdvvlfvu
+      - DB_HOST=peanut.db.elephantsql.com
+      - JWT_SECRET_KEY=''
+      - EMAIL_SERVICE=Gmail
+      - EMAIL_USER=''
+      - EMAIL_PASSWORD=''
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres_db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sdvvlfvu
+      POSTGRES_PASSWORD: e-tXA8_NwTGLhqU0JfDcJ7YaZKZB91Hf
+      POSTGRES_DB: sdvvlfvu

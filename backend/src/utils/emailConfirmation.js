@@ -1,9 +1,9 @@
 const handlebars = require('handlebars');
 const { transporter, loadEmailTemplate } = require('./emailService');
 
-const emailTemplatePath = './src/utils/emailConfirmation.hbs'; // Correct the path
 
-async function sendConfirmationEmail(userEmail, userName, confirmationLink) {
+
+async function sendConfirmationEmail(userEmail, userName, confirmationLink, emailTemplatePath) {
   try {
     const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
     const emailTemplate = handlebars.compile(emailTemplateContent);
