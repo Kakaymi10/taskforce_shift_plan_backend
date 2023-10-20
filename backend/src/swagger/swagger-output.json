@@ -13,6 +13,9 @@
   "paths": {
     "/auth/signup": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -28,6 +31,9 @@
                   "example": "any"
                 },
                 "password": {
+                  "example": "any"
+                },
+                "roleId": {
                   "example": "any"
                 }
               }
@@ -52,6 +58,9 @@
     },
     "/auth/confirm-email": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -75,6 +84,9 @@
     },
     "/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -96,14 +108,28 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/auth/forgotpassword": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
-
         "parameters": [
           {
             "name": "body",
@@ -118,19 +144,27 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-
-    "/companies/create": {
-      "post": {
     "/auth/resetpassword": {
       "put": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -169,6 +203,9 @@
     },
     "/auth/invite": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -192,9 +229,6 @@
                 },
                 "email": {
                   "example": "any"
-                },
-                "isApproved": {
-                  "example": "any"
                 }
               }
             }
@@ -216,17 +250,25 @@
         }
       }
     },
-    "/companies/update/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-
     "/departments/": {
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "post": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -243,12 +285,7 @@
                 "name": {
                   "example": "any"
                 },
-
-                "address": {
-                  "example": "any"
-                },
-                "isApproved": {
-                "companyId": {
+                "description": {
                   "example": "any"
                 }
               }
@@ -258,57 +295,6 @@
         "responses": {
           "201": {
             "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
           },
           "403": {
             "description": "Forbidden"
@@ -324,6 +310,9 @@
     },
     "/departments/{id}": {
       "get": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -346,6 +335,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -368,7 +360,7 @@
                 "name": {
                   "example": "any"
                 },
-                "companyId": {
+                "description": {
                   "example": "any"
                 }
               }
@@ -378,9 +370,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "403": {
             "description": "Forbidden"
@@ -394,6 +383,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -409,8 +401,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "403": {
             "description": "Forbidden"
@@ -426,6 +418,9 @@
     },
     "/roles/": {
       "get": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -437,6 +432,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -478,6 +476,9 @@
     },
     "/roles/{id}": {
       "get": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -500,6 +501,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -545,6 +549,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Role"
+        ],
         "description": "",
         "parameters": [
           {
@@ -575,21 +582,47 @@
         }
       }
     },
-
     "/companies/": {
       "get": {
+        "tags": [
+          "Company"
+        ],
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/companies/create": {
       "post": {
+        "tags": [
+          "Company"
+        ],
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -610,6 +643,15 @@
           "201": {
             "description": "Created"
           },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -618,12 +660,20 @@
     },
     "/companies/update/{id}": {
       "put": {
+        "tags": [
+          "Company"
+        ],
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -646,48 +696,8 @@
           "200": {
             "description": "OK"
           },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-
-    "/companies/delete/{id}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/companies/{id}/approve": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -698,8 +708,60 @@
         }
       }
     },
-    "/companies/{id}/reject": {
+    "/companies/updateStatus": {
       "put": {
+        "tags": [
+          "Company"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/companies/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Company"
+        ],
         "description": "",
         "parameters": [
           {
@@ -707,11 +769,19 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -724,6 +794,9 @@
     },
     "/users/": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -737,6 +810,9 @@
     },
     "/users/user": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -758,8 +834,16 @@
         }
       },
       "patch": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "email",
             "in": "query",
@@ -776,6 +860,9 @@
                 },
                 "departmentId": {
                   "example": "any"
+                },
+                "companyId": {
+                  "example": "any"
                 }
               }
             }
@@ -784,6 +871,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -794,6 +884,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [
           {
@@ -815,8 +908,161 @@
         }
       }
     },
+    "/absences/": {
+      "post": {
+        "tags": [
+          "Absences"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": "any"
+                },
+                "reason": {
+                  "example": "any"
+                },
+                "date": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Absences"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/absences/{userId}/absences": {
+      "get": {
+        "tags": [
+          "Absences"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/absences/{id}": {
+      "put": {
+        "tags": [
+          "Absences"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "example": "any"
+                },
+                "date": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Absences"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/shifts/": {
       "get": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -828,6 +1074,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "parameters": [
           {
@@ -867,6 +1116,9 @@
           "404": {
             "description": "Not Found"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -875,6 +1127,9 @@
     },
     "/shifts/{id}": {
       "get": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "parameters": [
           {
@@ -897,6 +1152,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "parameters": [
           {
@@ -948,6 +1206,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "parameters": [
           {
@@ -978,13 +1239,15 @@
         }
       }
     },
-
-    "/shifts/user/{id}": {
+    "/shifts/user/{userId}": {
       "get": {
+        "tags": [
+          "Shift"
+        ],
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"

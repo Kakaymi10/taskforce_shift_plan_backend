@@ -4,6 +4,7 @@ const { User } = db;
 
 class UsersController {
     static async getAllUsers (req, res) {
+        // #swagger.tags = ['User']
         try {
            const allUsers = await User.findAll({
             attributes: { exclude: ['password'] },
@@ -16,12 +17,12 @@ class UsersController {
     }
 
     static async getUserByEmail (req, res) {
-        const email = req.query.email;
-        console.log(email, '(((((((((((((((((')
+        // #swagger.tags = ['User']
+        const {email}= req.query;
         try {
            const user = await User.findOne({
             where: {
-                email: email,
+                email,
             }
            });
 
@@ -37,13 +38,14 @@ class UsersController {
     }
 
     static async updateUser (req, res) {
+        // #swagger.tags = ['User']
        const { email } = req.query;
-       const { roleId, departmentId } = req.body
+       const { roleId, departmentId, companyId } = req.body
 
        try {
         const user = await User.findOne({
             where: {
-                email: email,
+                email,
             }
            });
      
@@ -52,8 +54,10 @@ class UsersController {
            }
 
            const updateUser = await user.update({
-            roleId: roleId,
-            departmentId: departmentId
+            roleId,
+            departmentId,
+            companyId
+
            });
 
            if(!updateUser) {
@@ -68,12 +72,13 @@ class UsersController {
     }
 
     static async deleteUser (req, res) {
+        // #swagger.tags = ['User']
         const { email } = req.query;
  
         try {
          const user = await User.findOne({
              where: {
-                 email: email,
+                 email,
              }
             });
       
@@ -83,7 +88,7 @@ class UsersController {
  
             const deletedUser = await User.destroy({
                 where: {
-                    email: email,
+                    email,
                 }
                });
  

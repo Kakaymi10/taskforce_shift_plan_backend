@@ -9,14 +9,14 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
-      - DB_NAME=''
-      - DB_PASSWORD=''
-      - DB_USER=sdvvlfvu
-      - DB_HOST=peanut.db.elephantsql.com
-      - JWT_SECRET_KEY=''
+      - DB_NAME=wtowxche
+      - DB_PASSWORD=cVELqqovWrErefoKYY2bvP-aqmSCa2HQ
+      - DB_USER=wtowxche
+      - DB_HOST=suleiman.db.elephantsql.com
+      - JWT_SECRET_KEY=R5#Vt@p8$2MnKuSvW1yZ%qJk3Hn4Gf&7
       - EMAIL_SERVICE=Gmail
-      - EMAIL_USER=''
-      - EMAIL_PASSWORD=''
+      - EMAIL_USER=moussamoustaphamoussa37@gmail.com
+      - EMAIL_PASSWORD=gzzp cuti kvxt ubio
     depends_on:
       - postgres
 
@@ -29,3 +29,4 @@ services:
       POSTGRES_USER: sdvvlfvu
       POSTGRES_PASSWORD: e-tXA8_NwTGLhqU0JfDcJ7YaZKZB91Hf
       POSTGRES_DB: sdvvlfvu
+

@@ -28,7 +28,7 @@ async function sendConfirmationEmail(userEmail, userName, confirmationLink, emai
   }
 }
 
-async function sendInvitationEmail(userEmail, userName, loginLink, companyName, password) {
+async function sendInvitationEmail(userEmail, userName, loginLink, password,emailTemplatePath) {
   try {
     const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
     const emailTemplate = handlebars.compile(emailTemplateContent);
@@ -36,7 +36,8 @@ async function sendInvitationEmail(userEmail, userName, loginLink, companyName, 
     const emailContent = emailTemplate({
       userName,
       loginLink,
-      name: 'ShiftPlan'
+      name: 'ShiftPlan',
+      password,
     });
 
     await transporter.sendMail({
