@@ -96,15 +96,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -112,6 +103,7 @@
     "/auth/forgotpassword": {
       "post": {
         "description": "",
+
         "parameters": [
           {
             "name": "body",
@@ -126,22 +118,17 @@
             }
           }
         ],
+
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
+
+    "/companies/create": {
+      "post": {
     "/auth/resetpassword": {
       "put": {
         "description": "",
@@ -205,6 +192,9 @@
                 },
                 "email": {
                   "example": "any"
+                },
+                "isApproved": {
+                  "example": "any"
                 }
               }
             }
@@ -226,6 +216,15 @@
         }
       }
     },
+    "/companies/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+
     "/departments/": {
       "post": {
         "description": "",
@@ -244,6 +243,11 @@
                 "name": {
                   "example": "any"
                 },
+
+                "address": {
+                  "example": "any"
+                },
+                "isApproved": {
                 "companyId": {
                   "example": "any"
                 }
@@ -571,6 +575,7 @@
         }
       }
     },
+
     "/companies/": {
       "get": {
         "description": "",
@@ -647,6 +652,7 @@
         }
       }
     },
+
     "/companies/delete/{id}": {
       "delete": {
         "description": "",
@@ -972,6 +978,7 @@
         }
       }
     },
+
     "/shifts/user/{id}": {
       "get": {
         "description": "",

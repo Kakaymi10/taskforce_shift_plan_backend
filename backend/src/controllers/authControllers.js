@@ -27,7 +27,8 @@ class AuthController {
 
         // After successfully creating the user, send a confirmation email
         const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/confirm-email?token=${newUser.token}`;
-        await sendConfirmationEmail(newUser.email, newUser.name, confirmationLink);
+        const emailTemplatePath = './src/utils/emailConfirmation.hbs';
+        await sendConfirmationEmail(newUser.email, newUser.name, confirmationLink, emailTemplatePath);
 
         const userToken = generateToken(newUser);
         
