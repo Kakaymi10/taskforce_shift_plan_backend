@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', ShiftController.getAllShifts);
 router.get('/:id', ShiftController.getShiftById);
-router.get('/user/:id', ShiftController.getShiftsByUserId);
+router.get('/user/:userId', ShiftController.getShiftsByUserId);
 router.post('/', checkUserRole('Admin', 'SuperAdmin','Manager'), ShiftController.createShift);
 router.put('/:id', checkUserRole('Admin', 'SuperAdmin','Manager'), ShiftController.updateShift);
 router.delete('/:id', checkUserRole('Admin', 'SuperAdmin','Manager'), ShiftController.deleteShift);

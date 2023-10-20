@@ -1,10 +1,13 @@
 const db = require('../../models/index');
-const { User, Absence, Department } = db; // Assuming you have a Department model
+
+const { User, Absence } = db; // Assuming you have a Department model
 const { createAbsenceSchema } = require('./validations/absenceValidations');
 const { sendConfirmationEmail } = require('../utils/emailConfirmation');
+
 class AbsenceController {
   // Create an absence
   static async createAbsence(req, res) {
+    // #swagger.tags = ['Absences']
     try {
       const { userId, reason, date } = req.body;
 
@@ -24,15 +27,16 @@ class AbsenceController {
       // Create an absence
       const absence = await Absence.create({ userId, reason, date });
       const usersInSameDepartment = await User.findAll({
-        where: { departmentId: user.departmentId, roleId: 1 },
+        where: { departmentId: user.departmentId, roleId: 4 },
         attributes: ['email'], // Return only email
       });
       const emailTemplatePath = './src/utils/absenceRequest.hbs';
       const confirmationLink = ``;
-      for (let i = 0; i < usersInSameDepartment.length; i++) {
-        const currentUser = usersInSameDepartment[i]; // Get the current user
+      const promises = usersInSameDepartment.map(async (currentUser) => {
         await sendConfirmationEmail(currentUser.email, user.name, confirmationLink, emailTemplatePath);
-      }
+      });
+
+      await Promise.all(promises);
       
       // Return the created absence
       return res.status(201).json(absence);
@@ -43,6 +47,7 @@ class AbsenceController {
 
   // Get all absences
   static async getAllAbsences(req, res) {
+    // #swagger.tags = ['Absences']
     try {
       const absences = await Absence.findAll();
       return res.status(200).json(absences);
@@ -53,8 +58,9 @@ class AbsenceController {
 
   // Get absences for a specific user by their ID
   static async getAbsencesForUser(req, res) {
+    // #swagger.tags = ['Absences']
     try {
-      const userId = req.params.userId;
+      const {userId} = req.params;
 
       const absences = await Absence.findAll({ where: { userId } });
       return res.status(200).json(absences);
@@ -66,6 +72,7 @@ class AbsenceController {
 
   // Update an absence
   static async updateAbsence(req, res) {
+    // #swagger.tags = ['Absences']
     try {
       const absenceId = req.params.id;
       const { reason, date } = req.body;
@@ -96,6 +103,7 @@ class AbsenceController {
 
   // Delete an absence
   static async deleteAbsence(req, res) {
+    // #swagger.tags = ['Absences']
     try {
       const absenceId = req.params.id;
   
@@ -119,11 +127,9 @@ class AbsenceController {
       });
       const emailTemplatePath = './src/utils/absenceCancel.hbs';
       const confirmationLink = ``;
-      for (let i = 0; i < usersInSameDepartment.length; i++) {
-        const currentUser = usersInSameDepartment[i]; // Get the current user
+      await Promise.all(usersInSameDepartment.map(async (currentUser) => {
         await sendConfirmationEmail(currentUser.email, user.name, confirmationLink, emailTemplatePath);
-      }
-      
+      }));
 
       await absence.destroy();
   

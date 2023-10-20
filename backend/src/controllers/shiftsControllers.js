@@ -5,14 +5,15 @@ const { Shift } = db;
 class ShiftController {
 
 static async createShift(req, res) {
+    // #swagger.tags = ['Shift']
     const { date, start_time, end_time, userId } = req.body;
 
     try{
-        const shift = await Shift.findOne({where: {date:date, start_time:start_time, end_time:end_time}});
+        const shift = await Shift.findOne({where: {date}});
 
         if(shift){
-            res.status(403).send({message: 'Shift already exists', shift});
-        } else if(!shift){
+            res.status(409).send({message: 'Shift already exists'});
+        }else if(!shift){
             const newShift = await Shift.create({
                 date,
                 start_time,
@@ -20,7 +21,7 @@ static async createShift(req, res) {
                 userId,
             });
 
-            res.status(201).send({
+                res.status(201).send({
                 message: 'Shift created successfully',
                 newShift,
             });
@@ -32,6 +33,7 @@ static async createShift(req, res) {
 }
 
 static async getAllShifts(req, res) {
+    // #swagger.tags = ['Shift']
     try{
         const shifts = await Shift.findAll();
 
@@ -45,6 +47,7 @@ static async getAllShifts(req, res) {
 }
 
 static async getShiftById(req, res) {
+    // #swagger.tags = ['Shift']
     const { id } = req.params;
 
     try{
@@ -65,6 +68,7 @@ static async getShiftById(req, res) {
 }
 
 static async updateShift(req, res) {
+    // #swagger.tags = ['Shift']
     const { id } = req.params;
     const { date, start_time, end_time, userId } = req.body;
 
@@ -90,6 +94,7 @@ static async updateShift(req, res) {
 }
 
 static async deleteShift(req, res) {
+    // #swagger.tags = ['Shift']
     const { id } = req.params;
 
     try{
@@ -111,6 +116,7 @@ static async deleteShift(req, res) {
 }
 
 static async getShiftsByUserId(req, res) {
+    // #swagger.tags = ['Shift']
     const { userId } = req.params;
 
     try{

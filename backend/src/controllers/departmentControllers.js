@@ -3,6 +3,7 @@ const { createDepartmentSchema, updateDepartmentSchema } = require('./validation
 
 class DepartmentController {
   static async createDepartment(req, res) {
+     // #swagger.tags = ['Department']
     try {
       const { name, companyId } = req.body;
 
@@ -21,49 +22,50 @@ class DepartmentController {
 
       const department = await Department.create({ name, companyId });
       console.log('Department Created Successfully');
-      res.status(201).json(department);
+      return res.status(201).json(department);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to create department' });
+     return res.status(500).json({ error: 'Failed to create department' });
     }
   }
 
   static async getAllDepartments(req, res) {
+     // #swagger.tags = ['Department']
     try {
       const departments = await Department.findAll();
-      res.status(200).json(departments);
+      res.status(200).json({message: 'Departments fetched succesfully!', departments});
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to fetch departments' });
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 
   static async deleteAllDepartments(req, res) {
+     // #swagger.tags = ['Department']
     try {
       await Department.destroy({ where: {} });
     res.status(204).json({success: 'Deleted all departments'});
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to delete all departments' });
+      res.status(500).json({ error: 'Internal server error'  });
     }
   }
 
   static async getDepartmentById(req, res) {
+     // #swagger.tags = ['Department']
     try {
       const departmentId = req.params.id;
       const department = await Department.findByPk(departmentId);
       if (department) {
-        res.status(200).json(department);
+        res.status(200).json({message: 'Deprtment fetched successfully!', department});
       } else {
         res.status(404).json({ error: 'Department not found' });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to fetch department' });
+      res.status(500).json({error: 'Internal server error' });
     }
   }
 
   static async updateDepartmentById(req, res) {
+     // #swagger.tags = ['Department']
     try {
       const departmentId = req.params.id;
 
@@ -82,15 +84,15 @@ class DepartmentController {
 
       const { name, companyId } = req.body;
       await department.update({ name, companyId });
-      console.log('Updated');
-      res.status(200).json(department);
+      
+     return res.status(200).json({message: 'Company Updated successfull!', department});
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to update department' });
+      return res.status(500).json({ error: 'Internal server error'  });
     }
   }
 
   static async deleteDepartmentById(req, res) {
+     // #swagger.tags = ['Department']
     try {
       const departmentId = req.params.id;
 
@@ -102,10 +104,9 @@ class DepartmentController {
       }
 
       await department.destroy();
-      res.status(204).json(`Department with id: ${departmentId} deleted`);
+      return res.status(204).json(`Department deleted successfully`);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to delete department' });
+      return res.status(500).json({ error: 'Internal server error'  });
     }
   }
 }
