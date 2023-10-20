@@ -37,7 +37,6 @@ class AbsenceController {
       // Return the created absence
       return res.status(201).json(absence);
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
