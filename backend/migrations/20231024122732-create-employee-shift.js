@@ -2,50 +2,44 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Absences', {
+    await queryInterface.createTable('EmployeeShifts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
+      shiftId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Shifts',
+          key: 'id'
+        }
+      },
       date: {
-        type: Sequelize.DATE,
-        allowNull:false
-      },
-      reason: {
-        type: Sequelize.STRING,
-        allowNull:false
-      },
-      employeeId: {
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
-      },
-      managerId: {
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+        type: Sequelize.DATEONLY,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Absences');
+    await queryInterface.dropTable('EmployeeShifts');
   }
 };

@@ -1,112 +1,196 @@
 const { Department } = require('../../models/index');
-const { createDepartmentSchema, updateDepartmentSchema } = require('./validations/departmentValidation');
+const DataAccesManagement = require('../utils/dataAccessManagement');
+const findUserByToken = require('../utils/findUserByToken');
 
 class DepartmentController {
   static async createDepartment(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
-      const { name, companyId } = req.body;
+      const { name } = req.body;
+      const token = req.headers.authorization;
 
-      // Validate request data using the Joi schema
-      const { error } = createDepartmentSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
+      const loggedInUser = await findUserByToken(token);
 
       // Check if the department with the same name already exists
       const existingDepartment = await Department.findOne({ where: { name } });
 
       if (existingDepartment) {
-        return res.status(400).json({ error: 'Department with this name already exists' });
+        return res
+          .status(400)
+          .json({ error: 'Department with this name already exists' });
       }
 
-      const department = await Department.create({ name, companyId });
-      console.log('Department Created Successfully');
-      return res.status(201).json(department);
+      const department = await Department.create({
+        name,
+        companyId: loggedInUser.companyId,
+      });
+
+      return res
+        .status(201)
+        .json({ message: 'Department Created Successfully', department });
     } catch (error) {
-      console.error(error);
-     return res.status(500).json({ error: 'Failed to create department' });
+      return res
+        .status(500)
+        .json({ message: 'Failed to create department', error });
     }
   }
 
   static async getAllDepartments(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
       const departments = await Department.findAll();
-      res.status(200).json({message: 'Departments fetched succesfully!', departments});
+
+      const data = DataAccesManagement.departmentAccessManager(
+        loggedInUser,
+        departments,
+      );
+
+      res
+        .status(200)
+        .json({
+          message: 'Departments fetched succesfully!',
+          departments: data,
+        });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: 'Failed to fetch departments', error });
     }
   }
 
   static async deleteAllDepartments(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
-      await Department.destroy({ where: {} });
-    res.status(204).json({success: 'Deleted all departments'});
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
+      await Department.destroyAll({
+        where: { companyId: loggedInUser.companyId },
+      });
+
+      res.status(204).json({ message: 'Deleted all departments' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error'  });
+      res.status(500).json({ message: 'Filed to deleted departments', error });
     }
   }
 
   static async getDepartmentById(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
       const departmentId = req.params.id;
+
       const department = await Department.findByPk(departmentId);
+
       if (department) {
-        res.status(200).json({message: 'Deprtment fetched successfully!', department});
-      } else {
-        res.status(404).json({ error: 'Department not found' });
+        res
+          .status(200)
+          .json({ message: 'Deprtment fetched successfully!', department });
       }
+
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
+      const data = DataAccesManagement.departmentAccessManager(loggedInUser, [
+        department.dataValues,
+      ]);
+
+      if (data.length === 0) {
+        return res.status(401).send({
+          message: 'You are not authorized to perform this action!',
+        });
+      }
+
+      return res
+        .status(200)
+        .json({ message: 'Department fetched successfully!', department });
     } catch (error) {
-      res.status(500).json({error: 'Internal server error' });
+      return res
+        .status(500)
+        .json({ message: 'Failed to fetch department', error });
     }
   }
 
   static async updateDepartmentById(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
+      const { name, companyId } = req.body;
       const departmentId = req.params.id;
 
       // Check if the department with the given ID exists
-      const department = await Department.findByPk(departmentId);
+      const department = await Department.findOne({
+        where: { id: departmentId },
+      });
 
       if (!department) {
-        return res.status(404).json({ error: 'Department not found' });
+        return res.status(404).json({ message: 'Department not found' });
       }
 
-      // Validate request data using the Joi schema
-      const { error } = updateDepartmentSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
+      const data = DataAccesManagement.departmentAccessManager(loggedInUser, [
+        department.dataValues,
+      ]);
+
+      if (data.length === 0) {
+        return res.status(400).send({
+          message: 'You are not authorized to perform this action!',
+        });
       }
 
-      const { name, companyId } = req.body;
       await department.update({ name, companyId });
-      
-     return res.status(200).json({message: 'Company Updated successfull!', department});
+
+      return res
+        .status(200)
+        .json({ message: 'Company Updated successfully!', department });
     } catch (error) {
-      return res.status(500).json({ error: 'Internal server error'  });
+      return res
+        .status(500)
+        .json({ message: 'Failed to update department', error });
     }
   }
 
   static async deleteDepartmentById(req, res) {
-     // #swagger.tags = ['Department']
+    // #swagger.tags = ['Department']
     try {
       const departmentId = req.params.id;
 
       // Check if the department with the given ID exists
-      const department = await Department.findByPk(departmentId);
+      const department = await Department.findOne({
+        where: { id: departmentId },
+      });
 
       if (!department) {
-        return res.status(404).json({ error: 'Department not found' });
+        return res.status(404).json({ message: 'Department not found' });
+      }
+
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
+      const data = DataAccesManagement.departmentAccessManager(loggedInUser, [
+        department.dataValues,
+      ]);
+
+      if (data.length === 0) {
+        return res.status(400).send({
+          message: 'You are not authorized to perform this action!',
+        });
       }
 
       await department.destroy();
-      return res.status(204).json(`Department deleted successfully`);
+      return res
+        .status(204)
+        .json({ message: 'Department deleted successfully' });
     } catch (error) {
-      return res.status(500).json({ error: 'Internal server error'  });
+      return res
+        .status(500)
+        .json({ message: 'Failed to delete department', error });
     }
   }
 }

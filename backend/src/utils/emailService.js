@@ -14,8 +14,8 @@ async function loadEmailTemplate(emailTemplatePath) {
     const templateFile = await fs.readFile(emailTemplatePath, 'utf8');
     return templateFile;
   } catch (error) {
-    console.error('Error loading email template:', error);
-    return error.message;
+    console.log(error.message)
+    throw error;
   }
 }
 

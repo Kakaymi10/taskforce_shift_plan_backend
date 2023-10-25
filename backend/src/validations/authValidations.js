@@ -1,13 +1,13 @@
 const Joi = require('joi');
 
 const signUpSchema = Joi.object({
-  name: Joi.string().required().max(255).messages({
+  userName: Joi.string().required().max(255).messages({
     "string.base": "Name should be a string",
     "string.empty": "Name cannot be empty",
     "string.max": "Name should have a maximum length of {#limit}",
     "any.required": "Name is a required field",
   }),
-  email: Joi.string().email().required().messages({
+  userEmail: Joi.string().email().required().messages({
     "string.base": "Email should be a string",
     "string.email": "Email must be a valid email address",
     "string.empty": "Email cannot be empty",
@@ -18,6 +18,16 @@ const signUpSchema = Joi.object({
     "string.empty": "Password cannot be empty",
     "string.min": "Password should have a minimum length of {#limit}",
     "any.required": "Password is a required field",
+  }),
+  companyName: Joi.string().required().messages({
+    "string.base": "Company name should be a string",
+    "string.empty": "Company name cannot be empty",
+    "any.required": "Company name is a required field",
+  }),
+  companyAddress: Joi.string().required().messages({
+    "string.base": "Company address should be a string",
+    "string.empty": "Company addres cannot be empty",
+    "any.required": "Company address is a required field",
   }),
 });
 
@@ -34,12 +44,18 @@ const userInviteSchema = Joi.object({
     "string.empty": "Email cannot be empty",
     "any.required": "Email is a required field",
   }),
-  departmentId: Joi.string().messages({
-    "string.empty": "departmentId cannot be empty",
-  }),
   companyId: Joi.string().messages({
-    "string.empty": "companyId cannot be empty"
+    "string.empty": "Company Id cannot be empty",
+    "any.required": "Valid company id is required",
   }),
+  departmentId: Joi.string().required().messages({
+    "string.empty": "Departmen Id cannot be empty",
+    "any.required": "Valid department Id is required",
+  }),
+  roleId: Joi.string().required().messages({
+    "string.empty": "Role Id cannot be empty",
+    "any.required": "Valid Role Id is required",
+  })
 });
 
 const forgotPasswordSchema = Joi.object({
@@ -76,6 +92,7 @@ class AuthValidations {
     const { error } = signUpSchema.validate(req.body);
 
     if (error) {
+      console.log(error, '**********');
       const errorMessage = error.details[0].message;
       return res.status(400).json({ message: errorMessage });
     }
@@ -94,6 +111,7 @@ static login = (req, res, next) => {
 
     return next();
   };
+  
   static forgotPassword = (req, res, next) => {
     const { email } = req.body;
     const { error } = forgotPasswordSchema.validate({ email });

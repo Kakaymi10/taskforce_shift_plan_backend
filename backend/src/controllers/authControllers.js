@@ -8,73 +8,164 @@ const db = require('../../models/index');
 const {
   sendConfirmationEmail,
   sendInvitationEmail,
+  sendConfirmationEmailSuccessfully,
+  sendresetPasswordSuccessfully
 } = require('../utils/emailConfirmation');
+const findUserByToken = require('../utils/findUserByToken');
 
-const { User } = db;
+const { User, Company, Token, Department } = db;
 require('dotenv').config();
 
 class AuthController {
+  static async superAdminSignUp(req, res) {
+    // #swagger.tags = ['Auth']
+    try {
+      const { name, email, password } = req.body;
+
+
+      const confirmationToken = generateToken({ email }, process.env.JWT_SECRET_KEY_SIGNUP, '1d');
+      const hashedPassword = await hashPassword(password);
+
+      const newUser = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        roleId: 1,
+        confirmed: true,
+      });
+
+      const token = await Token.create({
+        userId: newUser.id,
+        token: confirmationToken,
+      });
+
+      // After successfully creating the user, send a confirmation email
+      const confirmationLink = `${process.env.BASE_URL}/auth/confirm/user/${newUser.id}/${token.token}`;
+      const emailTemplatePath = './src/utils/emailConfirmation.hbs';
+
+      await sendConfirmationEmail(
+        newUser.email,
+        newUser.name,
+        confirmationLink,
+        emailTemplatePath,
+      );
+
+      await sendConfirmationEmail(
+        newUser.email,
+        newUser.name,
+        confirmationLink,
+        emailTemplatePath,
+      );
+
+      return res.status(201).send({
+        message:
+          'User signed up successfully. Please check your email for confirmation!!',
+        user: { id: newUser.id, email: newUser.email, name: newUser.name },
+      });
+
+    } catch(error) {
+      return res.status(500).send({ message: 'Failed to signup', error });
+    }
+  }
+
   static async signUp(req, res) {
     // #swagger.tags = ['Auth']
-    const { name, email, password, roleId } = req.body;
-
+    const { userName, userEmail, password, companyName, companyAddress } = req.body;
     try {
-      const user = await User.findOne({ where: { email } });
-
+      const user = await User.findOne({ where: { email: userEmail } });
       if (user) {
-        res.status(403).send({ message: 'User already exists' });
-      } else if (!user) {
-        const confirmationToken = generateToken({ email });
-        const hashedPassword = await hashPassword(password);
-        const newUser = await User.create({
-          name,
-          email,
-          roleId,
-          password: hashedPassword,
-          token: confirmationToken,
-        });
-
-        // After successfully creating the user, send a confirmation email
-        const confirmationLink = `http://localhost:3000/shift-planner/api/v1/auth/confirm-email?token=${newUser.token}`;
-        const emailTemplatePath = './src/utils/emailConfirmation.hbs';
-        await sendConfirmationEmail(
-          newUser.email,
-          newUser.name,
-          confirmationLink,
-          emailTemplatePath,
-        );
-
-        const userToken = generateToken(newUser);
-
-        res.status(201).send({
-          message:
-            'User signed up successfully. Check your email for confirmation.',
-          token: userToken,
-          user: { id: newUser.id, email: newUser.email, name: newUser.name },
-        });
+        return res.status(403).send({ message: 'User already exists' });
       }
-    } catch (err) {
-      res.status(500).send({ message: err.message });
+
+      const oldCompany = await Company.findOne({
+        where: {
+          name: companyName,
+        },
+      });
+
+      if (!user && oldCompany) {
+        return res.status(400).send({ message: 'Company name already exists' });
+      }
+
+      const confirmationToken = generateToken({ userEmail}, process.env.JWT_SECRET_KEY_SIGNUP, '1d');
+      const hashedPassword = await hashPassword(password);
+
+      const newCompany = await Company.create({
+        name: companyName,
+        address: companyAddress,
+      });
+
+      const newUser = await User.create({
+        name: userName,
+        email: userEmail,
+        password: hashedPassword,
+        roleId: 2,
+        companyId: newCompany.id
+      });
+
+      const token = await Token.create({
+        userId: newUser.id,
+        token: confirmationToken,
+      });
+
+      // After successfully creating the user, send a confirmation email
+      const confirmationLink = `${process.env.BASE_URL}/auth/confirm/user/${newUser.id}/${token.token}`;
+      const emailTemplatePath = './src/utils/emailConfirmation.hbs';
+
+      await sendConfirmationEmail(
+        newUser.email,
+        newUser.name,
+        confirmationLink,
+        emailTemplatePath,
+      );
+
+      return res.status(201).send({
+        message:
+          'User signed up successfully. Please check your email for confirmation!!',
+        user: { id: newUser.id, email: newUser.email, name: newUser.name },
+        company: {
+          id: newCompany.id,
+          name: newCompany.name,
+          address: newCompany.address,
+        },
+      });
+    } catch (error) {
+      return res.status(500).send({ message: 'Failed to signup', error });
     }
   }
 
   static async confirmEmail(req, res) {
     // #swagger.tags = ['Auth']
-    const { token } = req.query;
+    const { token, userId } = req.params;
 
     try {
-      const user = await User.findOne({ where: { token } });
+      const user = await User.findOne({ where: { id: userId } });
+      if (!user) return res.status(400).send({ message: 'Invalid link' });
 
-      if (user) {
-        user.confirmedAt = new Date().toISOString();
-        await user.save();
+      const userToken = await Token.findOne({
+        userId,
+        token,
+      });
 
-        return res.status(200).send('Email confirmed successfully.');
-      }
+      if (!userToken) return res.status(400).send({ message: 'Invalid link' });
 
-      return res.status(400).send('Invalid confirmation token.');
-    } catch (err) {
-      return res.status(500).send({ message: err.message });
+      user.confirmed = true;
+      await user.save();
+
+      await userToken.destroy();
+
+
+      const emailTemplatePath =
+      './src/utils/emailConfirmationSuccessfully.hbs';
+    await sendConfirmationEmailSuccessfully(
+      user.email,
+      user.name,
+      emailTemplatePath,
+    );
+
+      return res.status(200).send('Email confirmed successfully.');
+    } catch (error) {
+      return res.status(500).send({ message: 'Failed to confirm up', error });
     }
   }
 
@@ -92,38 +183,45 @@ class AuthController {
       if (!user) {
         return res.status(404).json({
           status: 404,
-          error: 'User not found',
+          message: 'User not found',
         });
       }
 
-      if (user.confirmedAt === 'Not yet') {
+      if (user.confirmed === false) {
         return res.status(400).json({
           status: 400,
-          error: 'Please confirm your email ',
+          message: 'Please confirm your email',
         });
       }
 
-      const response = await validateUser(user.password, password);
+        const response = await validateUser(user.password, password);
 
-      if (!response) {
-        return res.status(401).json({
-          status: 401,
-          error: 'Invalid password',
-        });
-      }
+        if (!response) {
+          return res.status(401).json({
+            status: 401,
+            message: 'Invalid password',
+          });
+        }
 
-      const token = generateToken(user);
-      return res.status(200).json({
-        status: 200,
-        message: 'User logged in successfully',
-        data: {
+        await Token.destroy({where: { userId: user.id}});
+        
+        const token = generateToken(user, process.env.JWT_SECRET_KEY_LOGIN, '5d' )
+        const userToken = await Token.create({
+          userId: user.id,
           token,
-        },
-      });
+        });
+
+        return res.status(200).json({
+          status: 200,
+          message: 'User logged in successfully',
+          data: {
+            token: userToken.token,
+          },
+        });
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error: error.message,
+        message: error.message,
       });
     }
   }
@@ -138,15 +236,25 @@ class AuthController {
       if (!user) {
         return res.status(404).json({
           status: 404,
-          error: 'Account not found',
+          message: 'Account not found',
         });
       }
 
-      const resetToken = generateToken({ email });
-      user.resetToken = resetToken;
-      await user.save();
+      const oldUserToken = await Token.findOne({
+         userId: user.id
+      });
 
-      const confirmationLink = `${process.env.BACKEND_URL}/shift-planner/api/v1/auth/resetpassword?token=${resetToken}`;
+      if(oldUserToken) {
+        await oldUserToken.destroy();
+      }
+
+      const newUserToken = generateToken(user, process.env.JWT_SECRET_KEY_RESETPASSWORD, '1d' )
+      const userToken = await Token.create({
+        userId: user.id,
+        token: newUserToken,
+      });
+
+      const confirmationLink = `${process.env.BASE_URL}/auth/resetpassword/user/${user.id}/${userToken.token}`;
       const emailTemplatePath =
         './src/utils/forgotPasswordEmailConfirmation.hbs';
       await sendConfirmationEmail(
@@ -157,33 +265,48 @@ class AuthController {
       );
 
       return res.status(200).send({
-        message: 'Check your email for confirmation to change the password.',
-        user,
+        message: 'Please check your email to reset your password!',
       });
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error: error.message,
+        message: error.message,
       });
     }
   }
 
   static async resetPassword(req, res) {
     // #swagger.tags = ['Auth']
-    const { token } = req.query;
-
     try {
-      const user = await User.findOne({ where: { resetToken: token } });
+      const { token } = req.params;
+      const { newPassword } = req.body;
 
-      if (user) {
-        const { newPassword } = req.body;
+      const user = await findUserByToken(token);
+
+      const userToken = await Token.findOne({
+        userId: user.id,
+        token,
+      });
+
+      if (!userToken) return res.status(400).send({ message: 'Invalid link' });
+
+        
         const hashedPassword = await hashPassword(newPassword);
-        user.password = hashedPassword;
-        await user.save();
 
-        return res.status(200).send('Password reset successfully.');
-      }
-      return res.status(400).send('Invalid reset token.');
+        await User.update({ password: hashedPassword}, {where: { id: user.id}});
+
+        await userToken.destroy();
+
+        const emailTemplatePath =
+          './src/utils/resetPasswordsuccesfully.hbs';
+        await sendresetPasswordSuccessfully(
+          user.email,
+          user.name,
+          emailTemplatePath,
+        );
+
+        return res.status(200).send({message: 'Password reset successfully.'});
+
     } catch (err) {
       return res.status(500).send({ message: err.message });
     }
@@ -191,33 +314,74 @@ class AuthController {
 
   static async userInvite(req, res) {
     // #swagger.tags = ['Auth']
-    const { name, email } = req.body;
-    const { companyId, departmentId } = req.query;
+    const { name, email, roleId, departmentId } = req.body;
 
     try {
       const user = await User.findOne({ where: { email } });
-
       if (user) {
-        res.status(403).send({ message: 'User already exists' });
+        return res.status(403).send({ message: 'User already exists' });
       }
 
-      if (!user) {
+      const token = req.headers.authorization;
+
+      const loggedInUser = await findUserByToken(token);
+
+      const department = await Department.findOne({ where: { id: departmentId , companyId: loggedInUser.companyId } });
+
+      if (!department) {
+        return res.status(404).send({ message: 'Department does not exist!' });
+      }
         const password = generator.generate({
           length: 10,
           numbers: true,
         });
-        const confirmationToken = generateToken({ email });
+        
         const hashedPassword = await hashPassword(password);
-        const newUser = await User.create({
-          name,
-          email,
-          password: hashedPassword,
-          companyId,
-          departmentId,
-          token: confirmationToken,
-        });
 
-        const loginLink = `http://localhost:3000/shift-planner/api/v1/auth/confirm-email?token=${newUser.token}`;
+        let newUser;
+
+        if(loggedInUser.roleId === 2) {
+          if(roleId === 1 || roleId === 2) {
+            return res.status(400).send({
+              message: 'You are not authorized to perform this action!',
+            });
+          }
+        } 
+
+        if(loggedInUser.roleId === 3) {
+          if(roleId === 1 || roleId === 2 || roleId === 3) {
+            return res.status(400).send({
+              message: 'You are not authorized to perform this action!',
+            });
+          }
+        } 
+
+        if(loggedInUser.roleId === 2) {
+          newUser = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            companyId: loggedInUser.companyId,
+            departmentId,
+            roleId,
+            confirmed: true
+          });
+        } 
+        
+        if(loggedInUser.roleId === 3) {
+          newUser = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            companyId: loggedInUser.companyId,
+            departmentId: loggedInUser.departmentId,
+            roleId,
+            confirmed: true
+          });
+        }
+        
+
+        const loginLink = `${process.env.BASE_URL}/auth/login`;
         const emailTemplatePath = './src/utils/invitationEmail.hbs';
         await sendInvitationEmail(
           newUser.email,
@@ -227,24 +391,20 @@ class AuthController {
           emailTemplatePath,
         );
 
-        const userToken = generateToken(newUser);
-
-        res.status(201).send({
-          message: 'User created successfully!',
-          token: userToken,
+        return res.status(201).send({
+          message: 'User invited successfully!',
           user: {
-            id: newUser.id,
             email: newUser.email,
             name: newUser.name,
+            roleId: newUser.roleId,
             companyId: newUser.companyId,
             departmentId: newUser.departmentId,
           },
         });
-      }
     } catch (err) {
-      res.status(500).send({ message: err.message });
+     return res.status(500).send({ message: err.message });
     }
   }
-}
+};
 
 module.exports = AuthController;

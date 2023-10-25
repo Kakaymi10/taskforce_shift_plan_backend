@@ -1,4 +1,6 @@
 const db = require('../../models/index');
+const { roleAccessManger } = require('../utils/dataAccessManagement');
+const findUserByToken = require('../utils/findUserByToken');
 
 const { Role } = db;
 
@@ -27,17 +29,22 @@ static async createRole(req, res) {
     } catch(err){
         res.status(500).send({message: err.message});
     }
-
 }
 
 static async getAllRoles(req, res) {
     // #swagger.tags = ['Role']
     try{
+        const token = req.headers.authorization;
+
+        const loggedInUser = await findUserByToken(token);
+
         const roles = await Role.findAll();
+
+        const data = roleAccessManger(loggedInUser, roles);
 
         res.status(200).send({
             message: 'Roles retrieved successfully',
-            roles,
+            data,
         });
     } catch(err){
         res.status(500).send({message: err.message});

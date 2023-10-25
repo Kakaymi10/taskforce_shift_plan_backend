@@ -1,13 +1,14 @@
 const express = require('express');
-const RoleController = require('../controllers/roleControllers');
+const DepartmentController = require('../controllers/departmentControllers');
+const departmentValidations = require('../validations/departmentValidation');
 const checkUserRole = require('../middlewares/checkUserRole');
 
 const router = express.Router();
 
-router.get('/', RoleController.getAllRoles);
-router.get('/:id', RoleController.getRoleById);
-router.post('/', checkUserRole(['Admin', 'SuperAdmin']), RoleController.createRole);
-router.put('/:id', checkUserRole(['Admin', 'SuperAdmin']), RoleController.updateRole);
-router.delete('/:id', checkUserRole(['Admin', 'SuperAdmin']), RoleController.deleteRole);
+router.post('/create', checkUserRole('Admin', 'SuperAdmin'), departmentValidations, DepartmentController.createDepartment);
+router.get('/', checkUserRole('Admin', 'SuperAdmin', 'Manager'), DepartmentController.getAllDepartments);
+router.get('/:id', checkUserRole('Admin', 'SuperAdmin', 'Manager'), DepartmentController.deleteDepartmentById);
+router.put('/:id', checkUserRole('Admin', 'SuperAdmin'), departmentValidations, DepartmentController.updateDepartmentById);
+router.delete('/:id', checkUserRole('Admin', 'SuperAdmin'), DepartmentController.deleteDepartmentById);
 
 module.exports = router;

@@ -1,18 +1,19 @@
 const express = require('express');
 const authClass = require('../controllers/authControllers');
-const AuthValidations = require('../controllers/validations/authValidations');
+const AuthValidations = require('../validations/authValidations');
+const checkUserRole = require('../middlewares/checkUserRole');
 
 const router = express.Router();
 
-router.post('/signup',AuthValidations.signUp, authClass.signUp);
+router.post('/signup', AuthValidations.signUp, authClass.signUp);
+// router.post('/superAdmin/signup',  authClass.superAdminSignUp);
 
-router.get('/confirm-email', authClass.confirmEmail);
+router.get('/confirm/user/:userId/:token', authClass.confirmEmail);
 
 router.post('/login',AuthValidations.login, authClass.login);
 router.post('/forgotpassword',AuthValidations.forgotPassword, authClass.forgotPassword);
-router.put('/resetpassword', AuthValidations.reset, authClass.resetPassword)
+router.put('/resetpassword/:token', AuthValidations.reset, authClass.resetPassword)
 
-router.post('/invite',AuthValidations.userInvite, authClass.userInvite);
-
+router.post('/invite',checkUserRole('superAdmin', 'Admin', 'Manager'),AuthValidations.userInvite, authClass.userInvite);
 
 module.exports = router;
