@@ -10,21 +10,21 @@ class ShiftController {
     const { startTime, endTime, name } = req.body;
 
     try {
-      const oldShift = await Shift.findOne({ where: { name } });
-
-      if (oldShift) {
-        res.status(403).send({ message: 'Shift name already exists' });
-      }
-
-      const oldShift1 = await Shift.findOne({ where: { startTime, endTime } });
-
-      if (oldShift1) {
-        res.status(403).send({ message: 'Shift time already exists' });
-      }
-
       const token = req.headers.authorization;
 
       const loggedInUser = await findUserByToken(token);
+
+      const oldShift = await Shift.findOne({ where: { name, companyId: loggedInUser.companyId } });
+
+      if (oldShift) {
+        return res.status(403).send({ message: 'Shift name already exists' });
+      }
+
+      const oldShift1 = await Shift.findOne({ where: { startTime, endTime, companyId: loggedInUser.companyId } });
+
+      if (oldShift1) {
+        return res.status(403).send({ message: 'Shift time already exists' });
+      }
 
       const newShift = await Shift.create({
         name,

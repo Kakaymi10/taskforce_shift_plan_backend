@@ -216,6 +216,7 @@ class AuthController {
           message: 'User logged in successfully',
           data: {
             token: userToken.token,
+            user: {name: user.name, email: user.email, id: user.id, roleId: user.roleId, companyId: user.companyId, departmentId: user.departmentId},
           },
         });
     } catch (error) {
