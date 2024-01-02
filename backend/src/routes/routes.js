@@ -6,6 +6,8 @@ const swaggerFile = require('../swagger/swagger-output.json');
 const departmentRoutes = require('./departmentRoutes');
 const usersRoutes = require('./userRoutes');
 const CompanyRoutes = require('./campanyRoutes');
+const tokenRoutes = require('./tokenRoutes');
+const employeeShiftRoutes = require('./employeeShiftRoutes')
 
 const AbsenceRoutes = require('./absenceRoutes');
 
@@ -24,9 +26,11 @@ router.use('/companies', CompanyRoutes);
 
 router.use('/users', usersRoutes);
 router.use('/absences', AbsenceRoutes);
+router.use('/employeeShifts', employeeShiftRoutes);
 
 router.use('/shifts', ShiftRoutes);
 
+router.use('/tokens', tokenRoutes);
 
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

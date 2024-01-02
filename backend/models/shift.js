@@ -1,16 +1,26 @@
 'use strict';
+const { allow } = require('joi');
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Shift extends Model {
-    
     static associate(models) {
-      
-      Shift.belongsTo(models.User, {
-        foreignKey: 'userId',
-        as: 'user',
-        onDelete: 'CASCADE'
+      Shift.belongsTo(models.Company, {
+        foreignKey: 'companyId',
+        as: 'company',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
+      Shift.belongsToMany(models.User, {
+        through: models.EmployeeShift,
+        foreignKey: 'shiftId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+      Shift.hasMany(models.EmployeeShift, {
+        foreignKey: 'shiftId',
+        as: 'employees',
       });
     }
   }
@@ -22,37 +32,27 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'id',
     },
-    date:{
-      type: DataTypes.DATE,
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
-    },    
-    start_time:{
-       type: DataTypes.DATE,
-        allowNull: false,
+      field: 'name',
     },
-    end_time: {
-      type:DataTypes.DATE,
+    startTime:{
+      type: DataTypes.STRING,
       allowNull: false,
+      field: 'startTime'
     },
-    userId: {
-     type: DataTypes.INTEGER,
+    endTime:{
+      type: DataTypes.STRING,
       allowNull: false,
-      field: 'userId',
+      field: 'endTime'
     },
-    createdAt: {
+    companyId:{
+      type: DataTypes.INTEGER,
       allowNull: false,
-      type: DataTypes.DATE,
-      field: 'createdAt',
-      defaultValue: DataTypes.NOW,
+      field: 'companyId'
     },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      field: 'updatedAt',
-      defaultValue: DataTypes.NOW,
-    }
   }, {
-    timestamps: true,
     sequelize,
     modelName: 'Shift',
   });

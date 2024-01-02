@@ -1,9 +1,12 @@
 const handlebars = require('handlebars');
 const { transporter, loadEmailTemplate } = require('./emailService');
 
-
-
-async function sendConfirmationEmail(userEmail, userName, confirmationLink, emailTemplatePath) {
+async function sendConfirmationEmail(
+  userEmail,
+  userName,
+  confirmationLink,
+  emailTemplatePath,
+) {
   try {
     const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
     const emailTemplate = handlebars.compile(emailTemplateContent);
@@ -11,7 +14,7 @@ async function sendConfirmationEmail(userEmail, userName, confirmationLink, emai
     const emailContent = emailTemplate({
       userName,
       confirmationLink,
-      name: 'ShiftPlan'
+      name: 'ShiftPlan',
     });
 
     await transporter.sendMail({
@@ -21,14 +24,19 @@ async function sendConfirmationEmail(userEmail, userName, confirmationLink, emai
       text: `Thank you for signing up, ${userName}. Please click the link below to confirm your email.`,
       html: emailContent,
     });
-
-    console.log('Confirmation email sent.');
   } catch (error) {
-    console.error('Error sending confirmation email:', error);
+    console.log(error.message)
+    throw error;
   }
 }
 
-async function sendInvitationEmail(userEmail, userName, loginLink, companyName, password) {
+async function sendInvitationEmail(
+  userEmail,
+  userName,
+  loginLink,
+  password,
+  emailTemplatePath,
+) {
   try {
     const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
     const emailTemplate = handlebars.compile(emailTemplateContent);
@@ -36,7 +44,8 @@ async function sendInvitationEmail(userEmail, userName, loginLink, companyName, 
     const emailContent = emailTemplate({
       userName,
       loginLink,
-      name: 'ShiftPlan'
+      name: 'ShiftPlan',
+      password,
     });
 
     await transporter.sendMail({
@@ -46,14 +55,71 @@ async function sendInvitationEmail(userEmail, userName, loginLink, companyName, 
       text: `You've been invited to our shiftPlan platform. Please use your email and the provided password to login "${password}"`,
       html: emailContent,
     });
-
-    console.log('Invitation email sent.');
   } catch (error) {
-    console.error('Error sending confirmation email:', error);
+    console.log(error.message)
+    throw error;
+  }
+}
+
+async function sendConfirmationEmailSuccessfully(
+  userEmail,
+  userName,
+  emailTemplatePath,
+) {
+  try {
+    const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
+    const emailTemplate = handlebars.compile(emailTemplateContent);
+
+    const emailContent = emailTemplate({
+      userName,
+      name: 'ShiftPlan',
+    });
+
+    await transporter.sendMail({
+      from: 'ShiftPlan',
+      to: userEmail,
+      subject: 'Email confirmation succesfully!',
+      text: `Hello ${{ userName }}, your email was confirmed succesfully!`,
+      html: emailContent,
+    });
+  } catch (error) {
+    console.log(error.message)
+    throw error;
+  }
+}
+
+async function sendresetPasswordSuccessfully(
+  userEmail,
+  userName,
+  emailTemplatePath,
+) {
+  try {
+    const emailTemplateContent = await loadEmailTemplate(emailTemplatePath);
+    const emailTemplate = handlebars.compile(emailTemplateContent);
+
+    const emailContent = emailTemplate({
+      userName,
+      name: 'ShiftPlan',
+    });
+
+    await transporter.sendMail({
+      from: 'ShiftPlan',
+      to: userEmail,
+      subject: 'Password reset succesfully!',
+      text: `Hello ${{
+        userName,
+      }}, your account password has been successfully changed.`,
+      html: emailContent,
+    });
+  } catch (error) {
+    console.log(error.message)
+    throw error;
   }
 }
 
 module.exports = {
   sendConfirmationEmail,
-  sendInvitationEmail
+  sendInvitationEmail,
+  sendConfirmationEmailSuccessfully,
+  sendresetPasswordSuccessfully,
 };

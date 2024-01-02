@@ -1,14 +1,15 @@
 const express = require('express');
 const UsersController = require('../controllers/usersController');
+const checkUserRole = require('../middlewares/checkUserRole');
 
 const router = express.Router();
 
-router.get('/', UsersController.getAllUsers);
+router.get('/', checkUserRole('Admin', 'SuperAdmin', 'Manager'),UsersController.getAllUsers);
 
-router.get('/user', UsersController.getUserByEmail);
+router.get('/user', checkUserRole('Admin', 'SuperAdmin', 'Manager'), UsersController.getUserByEmail);
 
-router.patch('/user', UsersController.updateUser);
+router.patch('/', checkUserRole('Admin','SuperAdmin'), UsersController.updateUser);
 
-router.delete('/user', UsersController.deleteUser);
+router.delete('/', checkUserRole('Admin', 'SuperAdmin', 'Manager'),UsersController.deleteUser);
 
 module.exports = router;

@@ -1,13 +1,14 @@
 const express = require('express');
-const CompanyController = require('../controllers/campanyContoller')
+const CompanyController = require('../controllers/campanyContoller');
+const checkUserRole = require('../middlewares/checkUserRole');
+
 const router = express.Router();
 
-router.get('/', CompanyController.getCompany);
-router.post('/create', CompanyController.createCompany);
-router.put('/update/:id', CompanyController.updateCompany);
-router.delete('/delete/:id', CompanyController.deleteCompany);
-router.put('/:id/approve', CompanyController.approveCompany);
-router.put('/:id/reject', CompanyController.rejectCompany);
+router.get('/', checkUserRole('SuperAdmin', 'Admin'), CompanyController.getCompany);
+router.put('/update/:id', checkUserRole('SuperAdmin','Admin') ,CompanyController.updateCompany);
+router.put('/updateStatus', checkUserRole('SuperAdmin') , CompanyController.updateCompanyStatus);
+router.delete('/delete/:id',  checkUserRole('SuperAdmin'), CompanyController.deleteCompany);
+
 
 module.exports = router;   
 

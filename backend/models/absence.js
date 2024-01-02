@@ -4,13 +4,16 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Absence extends Model {
-    
     static associate(models) {
-      // define association here
       Absence.belongsTo(models.User, {
         foreignKey: 'userId',
-        as: 'user',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+      Absence.belongsTo(models.EmployeeShift, {
+        foreignKey: 'employeeShiftId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       });
     }
   }
@@ -22,34 +25,30 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'id',
     },
-    date:{
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    reason: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    userId:{
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       field: 'userId',
     },
-    createdAt: {
+    employeeShiftId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      type: DataTypes.DATE,
-      field: 'createdAt',
-      defaultValue: DataTypes.NOW,
+      field: 'employeeShiftId'
     },
-    updatedAt: {
+    reason: {
+      type: DataTypes.STRING,
       allowNull: false,
-      type: DataTypes.DATE,
-      field: 'updatedAt',
-      defaultValue: DataTypes.NOW,
+      field: 'reason'
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [['Approved', 'Pending', 'Rejected']]
+      },
+      defaultValue: 'Pending'
     }
-
   }, {
-    timestamps: true,
     sequelize,
     modelName: 'Absence',
   });
