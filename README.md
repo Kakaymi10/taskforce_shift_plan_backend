@@ -32,7 +32,7 @@ Install:
 
 ```bash
    git clone https://github.com/Kakaymi10/taskforce_shift_plan_backend.git
-   cd backend-repo
+   cd backend
 ```
 
 a Create a .env file and add your credentials
