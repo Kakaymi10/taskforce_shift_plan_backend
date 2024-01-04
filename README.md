@@ -80,7 +80,7 @@ start the app
     npm run dev
 ```
 
-
+#Run with Docker
 Build the Docker container:
 
 ```bash
