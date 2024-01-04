@@ -80,6 +80,8 @@ start the app
     npm run dev
 ```
 
+Access the backend at http://localhost:3000//shift-planner/api/v1
+
 #Run with Docker
 
 Build the Docker container:
@@ -94,7 +96,7 @@ Start the Docker container:
 docker run -p 3000:3000 my-node-app
 ```
     
-Access the backend at http://localhost:3000.
+Access the backend at http://localhost:3000//shift-planner/api/v1
 
 ## 4. Project Structure 
 The project directory structure is organized as follows:
