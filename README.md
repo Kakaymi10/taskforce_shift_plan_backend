@@ -35,6 +35,34 @@ Install:
    cd backend-repo
 ```
 
+a Create a .env file and add your credentials
+
+```
+    PORT = 3000
+
+    NODE_ENV = 'development'
+
+    # Online db
+    DB_NAME = ''
+    DB_PASSWORD = ''
+    DB_USER = ''
+    DB_HOST = ''
+
+    ## jwt secret key
+    JWT_SECRET_KEY_SIGNUP=''
+
+    JWT_SECRET_KEY_LOGIN=''
+
+    JWT_SECRET_KEY_RESETPASSWORD=''
+
+
+    EMAIL_SERVICE='gmail' 
+    EMAIL_USER='your email' 
+    EMAIL_PASSWORD='your password'
+
+    BASE_URL='http://localhost:3000/shift-planner/api/v1'
+```
+
 3.2 Running the Application
 
 Install Node.js dependencies:
@@ -42,6 +70,17 @@ Install Node.js dependencies:
 ```bash
 npm install
 ```
+Run swagger
+```bash
+ npm run swagger-autogen
+```
+
+start the app
+```bash
+    npm run dev
+```
+
+
 Build the Docker container:
 
 ```bash
